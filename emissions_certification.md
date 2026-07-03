@@ -1,6 +1,6 @@
 # Sigma — Emissions & Homologation
 
-*Companion to `sigma-spec.md`. Path chosen: a **new** Yamaha CP3 engine, run on the custom STM32/Rust ECU, homologated to a current standard.*
+*Companion to `README.md`. Path chosen: a **new** Yamaha CP3 engine, run on the custom STM32/Rust ECU, homologated to a current standard.*
 
 ## Premise
 
@@ -33,8 +33,25 @@ Pass EU individual approval to Euro 5+ and it comfortably clears UK approval and
 - [ ] Closed-loop stoichiometric tune (ECU + LSU 4.9 wideband)
 - [ ] Catalytic converter (collector)
 - [ ] Evap / charcoal canister + purge valve
-- [ ] Catalysed exhaust system — ties to the open exhaust decision in `sigma-spec.md`
-- [ ] **Tire speed rating vs certified top speed** — fitted tires must be rated ≥ the bike's approved top speed. Front is Pirelli Scorpion Rally STR 120/70-17 **58H (210 km/h)**; a standalone CP3 runs near that, so confirm 58H clears the certified top speed (or declare/restrict top speed) before approval. Rear 170/60-17 72V (240 km/h) is clear. (See tire note in `sigma-spec.md`.)
+- [ ] Catalysed exhaust system — ties to the open exhaust decision in `engine.md`
+- [ ] **Tire speed rating vs certified top speed** — fitted tires must be rated ≥ the bike's approved top speed. Front is Pirelli Scorpion Rally STR 120/70-17 **58H (210 km/h)**; a standalone CP3 runs near that, so confirm 58H clears the certified top speed (or declare/restrict top speed) before approval. Rear 170/60-17 72V (240 km/h) is clear. (See tire note in `chassis.md`.)
+
+## Road-legal equipment (approval beyond emissions)
+
+*Emissions is one half of homologation; a new one-off must also pass the construction, braking and lighting requirements of the individual-approval / single-vehicle path (EU IVA / UK MSVA; CA/MX inspection). Confirm the exact list per market + vehicle class — items below are cross-referenced to where they're specified.*
+
+- [ ] **ABS** — EU/UK generally **mandate ABS on new >125 cc motorcycles**. Fit an aftermarket modulator integrated with the custom ECU wheel-speed sensing, or confirm individual-approval / small-series relief. **Unresolved — gates road approval.** (Rear-brake note, `chassis.md` §1; telltale in `electronics.md` §8.)
+- [ ] **Dual independent brakes** — front (Brembo M4 + twin 320 mm) and rear (Brembo single) — `chassis.md`.
+- [ ] **Lighting (all LED, ECE-approved)** — headlight low/high + position/DRL; tail + brake light; front + rear indicators; plate light; rear + side reflectors — `electrical.md` §4.
+- [ ] **Mirrors** — road-legal field of view (`bodywork.md` §2).
+- [ ] **Audible warning (horn)** — `electrical.md` §5.
+- [ ] **Speedometer** — required units + tolerance; wheel-speed source (final drive, `chassis.md`) rendered on the cockpit (`electronics.md` §8).
+- [ ] **Number plate mount + illumination** — `bodywork.md`.
+- [ ] **Anti-theft / steering lock** — EU requires a device against unauthorized use; ties to the immobiliser decision (`electronics.md` §7).
+- [ ] **Chain guard** — final-drive contact protection (`chassis.md`).
+- [ ] **Sidestand** + start interlock (`electrical.md` §5).
+- [ ] **Noise / drive-by sound level** — approval limit; ties to the catalysed exhaust (`engine.md` §2).
+- [ ] **EMC (electromagnetic compatibility)** — an EU approval item, and a real design constraint here: the custom ECU + Linux cockpit + switching DC-DC must meet emission/immunity limits (`electronics.md`).
 
 ## OBD note
 

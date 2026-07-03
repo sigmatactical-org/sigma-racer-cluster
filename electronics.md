@@ -1,8 +1,6 @@
 # Sigma — Electronics & ECU
 
-*Companion to `sigma-spec.md`. The electronic half of Sigma (the Σ's second domain): a custom STM32 / Rust engine controller (§1–7) and an i.MX 8M Plus digital cockpit (§8), wrapped around the harvested Yamaha CP3. Chassis, mechanical, sourcing and finish rules live in `sigma-spec.md`; emissions/homologation in `emissions certification.md`.*
-
-*Custom STM32 / Rust engine management for the Yamaha CP3 triple.*
+*Companion to `README.md`. The electronic half of Sigma (the Σ's second domain): a custom STM32 / Rust engine controller (§1–7), an i.MX 8M Plus digital cockpit (§8) and the charging & power budget (§9), wrapped around the harvested Yamaha CP3. Engine & powertrain live in `engine.md`; chassis & running gear in `chassis.md`; strategy, sourcing and finish rules in the `README.md` hub; emissions/homologation in `emissions_certification.md`.*
 
 ## 1 · ECU
 
@@ -79,11 +77,11 @@ Characterize every factory CP3 sensor's type, range and connector on the bench �
 
 ## 7 · Open Electronics Items `[PENDING]`
 
-- **Emissions control** (for Euro 5+ homologation) — closed-loop stoichiometric tuning (ECU already does this), **catalytic converter** in the collector, **evap/charcoal canister** + purge valve. The CP3 is a Euro 5 engine, so the combustion is already there; tune to the limits, then through the approval/inspection path per market (see `emissions certification.md`).
+- **Emissions control** (for Euro 5+ homologation) — closed-loop stoichiometric tuning (ECU already does this), **catalytic converter** in the collector, **evap/charcoal canister** + purge valve. The CP3 is a Euro 5 engine, so the combustion is already there; tune to the limits, then through the approval/inspection path per market (see `emissions_certification.md`).
 - **Immobiliser / CAN handshake** — confirm what the donor CP3 needs to start and run; the custom ECU must replicate or cleanly delete it.
 - **Instruments** — **resolved: full digital cockpit on NXP i.MX 8M Plus — see §8.** (Not the Yamaha TFT: proprietary CAN, undrivable by the custom ECU.)
-- **Electrical & lighting**
-- **Charging** — use the CP3's factory stator + reg/rec; size for the new loads (ECU, ride-by-wire, lighting, fan)
+- **Electrical & lighting** — **moved: bespoke loom, power distribution, battery, lighting, switchgear now in `electrical.md`.**
+- **Charging** — **resolved: factory stator + SH847-class series reg/rec + firmware load-shedding + LiFePO4 buffer — see §9.**
 
 ---
 
@@ -116,7 +114,7 @@ The two domains are isolated: a maps/app crash on the A53 side cannot take down 
 
 | Item | Spec | Notes |
 |---|---|---|
-| Display | Wide **MIPI-DSI / LVDS TFT**, 1280×400-class "bar" cockpit format | Modern cockpit look; sunlight-readable + automotive-temp |
+| Display | **6.86" 1280×480 IPS "bar" — ~181 × 67 mm module (~18 cm wide), MIPI-DSI 4-lane (direct to the 8M Plus, no bridge), ≥1000 nits** `[BUY]`. Narrowest bar that clears the ~18–22 cm fork span; 2.67:1 aspect (a touch taller than 1280×400 — read as extra gauge height). Reference part: Aptus 6.86" 480×1280 MIPI 1000-nit | **Origin: China** (bar-panel integrators Aptus / CDTech, Shenzhen; automotive glass from Taiwan — Innolux / AUO). **Accepted as a documented exception to the CA/MX/EU sourcing rule** — no CA/MX/EU bar-panel source exists (cf. the Japanese-engine exception). Confirm on the production part: **optical bonding, −30/+85 automotive grade, ambient-light-sensor auto-dim** — the reference sample is −20/+70 and air-bonded |
 | Cameras | **2× MIPI-CSI** via the dual ISP (rear + blind-spot) | The 8M Plus has two ISPs / two camera inputs — good for two cameras; more than two needs muxing or extra hardware |
 | Connectivity | **Wi-Fi 6 / BT 5.x** (integrated on most 8M Plus SoMs); **cellular M.2 modem + GNSS** for live nav | |
 | Vehicle bus | **Dual CAN-FD** (native on the 8M Plus) to the custom ECU | Feeds the M7 safety cluster |
@@ -124,6 +122,41 @@ The two domains are isolated: a maps/app crash on the A53 side cannot take down 
 **Software.** A full embedded-Linux program on the A53 domain: **Yocto BSP** (or **Android Automotive OS**, NXP-supported, for a phone-like UX) hosting the maps engine, camera pipelines, connectivity stacks and HMI framework — **Qt**, or **Slint** to keep some Rust coherence (Slint runs on both i.MX Linux and MCUs). Separate **Zephyr** safety firmware on the M7 for telltales + CAN, plus boot orchestration between the two domains.
 
 **Reality check.** This converts "instrument cluster" into "cockpit + infotainment" — a second serious embedded system alongside the Rust ECU, and a full Linux program (BSP + maps + cameras + connectivity), not a weekend cluster. Two things to nail early: camera count/resolution vs the ISP ceiling, and the automotive power/EMC design for a Linux computer hung off a motorcycle loom.
+
+---
+
+## 9 · Charging & Power Budget
+
+*Sigma carries an unusually heavy accessory load for a café racer — the Rust ECU + ride-by-wire + the i.MX 8M Plus cockpit (SoM + bar TFT + 2 cameras + cellular modem) sit on top of the normal engine/lighting/fan draw. The charging system is kept **Yamaha-first** (the CP3's factory stator comes with the engine), upgraded around the edges rather than replaced.*
+
+**Decision `[LOCKED]`:** **factory CP3 stator + SH847-class series/MOSFET reg/rec + firmware load-shedding + LiFePO4 buffer battery.** Escalate to a rewound higher-output stator *only if* bench measurement shows the idle balance can't be closed.
+
+| Item | Spec | Status |
+|---|---|---|
+| Alternator | CP3 factory 3-phase permanent-magnet magneto — comes with the engine. Rated ~350 W (~24–25 A @ 14 V) @ ~5,000 rpm *(confirm on donor microfiche)* | `[LOCKED]` factory |
+| Reg/rec | **Shindengen SH847-class series/MOSFET** (~50 A) — replaces the factory shunt unit; cooler, more reliable, better idle charging. SH775 is the lower-current series fallback | `[BUY]` |
+| Buffer battery | **LiFePO4** — absorbs idle/transient deficits, lighter than lead-acid. Requires lithium-appropriate charge voltage + cold-behaviour check | `[BUY]` |
+| Load management | **Firmware load-shedding** — the two-domain split already helps: M7 keeps engine + safety telltales alive; the A53 cockpit, cameras and modem are deferred at boot and shed under low voltage. Priority: engine-critical > lighting > infotainment | `[BESPOKE]` firmware |
+| Fan control | Thermostatic — keep the ~100 W fan off the alternator at idle unless coolant demands it | `[BESPOKE]` firmware |
+
+**Why (output vs. rev).** The PM magneto's output rises with rpm then plateaus above ~6k. It is comfortable at cruise (~300–340 W available at ~4,000 rpm vs a ~200–250 W cruise load) but **marginal at idle** (only ~90–150 W available at ~1,200 rpm). Worst case — summer traffic idle with fan + lights + live cockpit — demands ~330–380 W, a ~200 W deficit the **LiFePO4 buffer** covers short-term and **firmware load-shedding** trims by dropping infotainment. The **series reg/rec** improves idle charging and thermal margin over the factory shunt unit.
+
+**Approx. load budget** *(engineering estimate — sum the real draw on the bench):*
+
+| Load | Typical W |
+|---|---|
+| ECU + injectors + coils (running) | ~50–70 |
+| Fuel pump | ~50–70 |
+| Ride-by-wire (avg / peak) | ~10 / ~50 |
+| Cooling fan (when on) | ~80–120 |
+| LED lighting (head/tail/signals) | ~40–60 |
+| i.MX cockpit SoM + display | ~20–30 |
+| Cameras + modem + GNSS | ~5–10 |
+| DC-DC conversion losses | ~10–20 |
+| **Cruise (fan off)** | **~200–250** |
+| **Worst case (idle, fan on, cockpit live)** | **~330–380** |
+
+**Verify on the bench (project rule — don't invent the curve).** Yamaha publishes one rated-output point, not a curve; the per-rev figures above are a representative PM-magneto model. Before locking the reg/rec and battery: confirm the rated point on the donor microfiche, **measure stator output at idle**, and sum the actual accessory draw. Only if the measured idle balance can't be closed does the **rewound higher-output stator** (Tier 3) come into play — at the cost of permanent parasitic drag and idle heat.
 
 ---
 
