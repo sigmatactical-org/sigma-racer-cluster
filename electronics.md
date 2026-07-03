@@ -4,6 +4,8 @@
 
 ## 1 · ECU
 
+*This section covers the ECU **hardware/interface**. The firmware — real-time architecture, trigger decode, fuel/ignition, the safety-critical ride-by-wire, fault handling and the bench→dyno→road bring-up plan — has its own deep spec: **`efi.md`**.*
+
 | Item | Spec |
 |---|---|
 | Core | Custom — STM32, Rust (Embassy async + real-time timer core) |

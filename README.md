@@ -18,14 +18,15 @@ Two domains summed into one machine: a bespoke chromoly featherbed chassis (**`c
 
 # Documents
 
-Sigma is specified across eight files. This one is the **hub** (strategy, markets, sourcing, finish, status-tag legend); the seven companions carry the domain detail.
+Sigma is specified across nine files. This one is the **hub** (strategy, markets, sourcing, finish, status-tag legend); the eight companions carry the domain detail.
 
 | File | Contents |
 |---|---|
 | **`engine.md`** | Engine & powertrain — CP3 spec, donor/harvest plan, premium upgrades, cooling install, fuel system, open engine items |
 | **`chassis.md`** | Chassis & running gear — frame + suspension, front end, wheels, brakes (front + rear), tires, final drive/gearing, mechanical sourcing, open chassis decisions |
 | **`bodywork.md`** | Bodywork & ergonomics — tank, seat/cowl, subframe, fenders, rider triangle, hand/foot controls |
-| **`electronics.md`** | The electronic half — custom STM32 / Rust ECU (§1–7), i.MX 8M Plus digital cockpit (§8), charging & power budget (§9) |
+| **`electronics.md`** | ECU hardware, sensor stack, connectors, i.MX 8M Plus digital cockpit (§8), charging & power budget (§9) |
+| **`efi.md`** | ECU **firmware** — real-time architecture, trigger decode, fuel/ignition, ride-by-wire safety, faults, comms, bench→dyno→road bring-up |
 | **`electrical.md`** | Electrical, lighting & harness — bespoke loom, power distribution, battery, lighting, switchgear |
 | **`emissions_certification.md`** | Euro 5+ technical target, per-market homologation paths, emissions hardware + road-legal equipment checklists |
 | **`build.md`** | Build plan — mass target, cost budget, procurement/lead times, phases, test & sign-off |
