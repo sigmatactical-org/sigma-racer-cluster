@@ -23,7 +23,7 @@
 
 **Buy notes:**
 
-- The custom ECU (see **`electronics.md`**) replaces the donor's ECU and loom — but you **keep** the engine, gearbox, ride-by-wire throttle bodies, factory sensors, **ignition coils, injectors, the assist/slipper clutch, the in-tank fuel pump + regulator, the stator + reg/rec, and the radiator + fan**; the ECU is built to interface with all of it. Default to the donor's Yamaha parts for powertrain ancillaries — already bought with the engine and matched to the CP3.
+- The custom ECU (see **`electronics.md`**) replaces the donor's ECU and loom — but you **keep** the engine, gearbox, ride-by-wire throttle bodies, factory sensors, **ignition coils, injectors, the assist/slipper clutch, the in-tank fuel pump + regulator, the stator + reg/rec, the radiator + fan, and the OEM ABS modulator + wheel-speed sensors + tone rings** (ABS decision — `chassis.md` §1); the ECU is built to interface with all of it. Default to the donor's Yamaha parts for powertrain ancillaries — already bought with the engine and matched to the CP3.
 - The CP3 is **ride-by-wire**: the throttle body's motor + dual throttle-position and dual grip sensors must be driven and read by the custom ECU — a safety-critical subsystem (see `electronics.md` §6).
 - The donor may need an **immobiliser / CAN handshake** to run; the custom ECU must replicate or cleanly delete it.
 - Cheapest path to a new engine is a new **MT-09** — harvest engine + throttle bodies + sensors + wiring reference; the rest of the bike is surplus.

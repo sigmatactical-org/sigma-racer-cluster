@@ -113,7 +113,7 @@ Drivers: 3× low-side injector outputs, hardware-timed (one per cylinder), from 
 - **Sensor:** Bosch **LSU 4.9 + CJ125** over SPI (`electronics.md` §2); post-collector single sensor for the triple.
 - **Warmup:** CJ125 heater control; no closed-loop until light-off; protect sensor on overrun.
 - **Loop:** PI trim around stoich (λ=1) in the closed-loop region; **long-term fuel trim** learned into a correction table and persisted; open-loop enrichment for power/thermal protection zones.
-- **Emissions tie-in:** the tune holds stoich for the cat (`emissions_certification.md`); catalyst-overtemp protection; small-series route means **no full OBD-II** required (keeps diagnostic scope sane — decide before locking cal scope).
+- **Emissions tie-in:** the tune holds stoich for the cat (`emissions_certification.md`); catalyst-overtemp protection. **OBD is in scope** — Sigma is a for-sale type-approved product, so the ECU must implement OBD to the Euro 5 stage (MIL + catalyst/misfire/sensor-rationality monitoring). Small-series relaxes some of it; scope real OBD, not none. A genuine firmware lift over the one-off — budget it.
 
 ## 9 · Safety architecture & fault handling
 
@@ -145,7 +145,7 @@ Every action raises a coded fault to the cockpit; nothing silently degrades.
 
 | Link | Use |
 |---|---|
-| **FDCAN** | Cockpit data (RPM, load, temps, lambda, gear, faults, telltales — `electronics.md` §8 M7 cluster) + possible immobiliser handshake. Defined **data dictionary** (message IDs, scaling) is a shared contract with the cockpit team. |
+| **FDCAN** | Cockpit data (RPM, load, temps, lambda, gear, faults, telltales — `electronics.md` §8 M7 cluster) + possible immobiliser handshake + the **OEM Yamaha ABS node** (coexist / feed wheel-speed / satisfy its handshake — same class as the immobiliser; ABS decision in `chassis.md` §1). Defined **data dictionary** (message IDs, scaling) is a shared contract with the cockpit team. |
 | **USB (FS)** | Tuning host: read/write cal tables live, real-time gauges, fault log, firmware update path. |
 | **SPI** | CJ125 lambda, knock IC, external log flash. |
 
@@ -153,7 +153,7 @@ Quickshifter (engine upgrade, `engine.md` §2) lives here: bidirectional — **i
 
 ## 12 · Bring-up & validation plan (gated)
 
-*No stage starts before the previous one's gate passes. This is the critical path of the whole build.*
+*No stage starts before the previous one's gate passes. This is the critical path of the whole build. The concrete step-by-step how-to for stages on the used engine is the **`development/mule-runbook.md`** (its phases map to the stages below).*
 
 1. **Host logic** — decoder, tables, plausibility, fault matrix as pure Rust, `cargo test` with golden captures + fault injection. **Gate:** matrix green.
 2. **Board bring-up** — G474 board, clocks, defmt, ADC-DMA, timers, FDCAN loopback. **Gate:** all peripherals verified.
