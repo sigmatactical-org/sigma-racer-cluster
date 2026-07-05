@@ -62,6 +62,17 @@
 
 **Gearing ↔ homologation.** Top speed set by the final drive must not exceed the fitted tire's speed rating; if a taller ratio pushes past the 58H front's 210 km/h, either regear, restrict/declare top speed, or revisit the front tire (tire note + `emissions_certification.md`).
 
+### Protection (army × café)
+
+*Field-ready ruggedness in service of the identity (`README.md` design ethos) — functional, not costume. ⚠ Mass tradeoff vs the ≤190 kg target (`build.md` §1): keep guards titanium / alloy and minimal.*
+
+| Item | Spec | Status |
+|---|---|---|
+| Bash / skid plate | Alloy or ti sump/engine guard — protects the CP3 cases + exhaust collector; suits the rally-tire scrambler stance | `[PENDING]` |
+| Engine / crash guards | Slim tubular guards or frame sliders protecting cases + tank; flat black | `[PENDING]` |
+| Radiator guard | **Airflow-open mesh** guard for the front-mount radiator (stone/debris) — must **not choke the extreme cooling** (`engine.md` §3) | `[PENDING]` |
+| Hand guards | *Optional* minimal tactical hand guards (weather/debris) — balance against the café-clean cockpit | `[PENDING]` |
+
 ## 2 · Front End
 
 | Item | Spec | Status |

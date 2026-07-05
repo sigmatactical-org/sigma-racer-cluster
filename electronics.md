@@ -25,7 +25,8 @@ On a harvested CP3 you **interface to the engine's factory sensors** (characteri
 | MAP | Primary load (speed-density) | **Use the CP3 factory intake-pressure sensor**; confirm its type (MAP vs. MAF) on the engine. NA engine → a ~1-bar sensor is correct. Only add an aftermarket MAP if the factory part can't be read, and size it **~1-bar (not 3-bar boost-grade)** — a 3-bar wastes two-thirds of its range on an NA triple |
 | CLT | Warmup / thermal comp | CP3 factory coolant-temp |
 | IAT | Air-density correction | CP3 factory intake-air-temp |
-| Wideband O₂ | Closed-loop fuel + diag | **Add** LSU 4.9 + CJ125 controller — single sensor post-collector for the triple. *(The one sensor with no Yamaha equivalent: the factory narrowband can't support tuning, so this stays Bosch.)* |
+| Wideband O₂ (pre-cat) | Closed-loop fuel + tuning | **Add** LSU 4.9 + CJ125 controller — **pre-cat**, post-collector. The one sensor with no Yamaha equivalent (factory narrowband can't support tuning), so it stays Bosch |
+| O₂ post-cat | Catalyst-efficiency monitoring (OBD) | **Repurpose the factory Yamaha narrowband** post-cat — Yamaha-first; narrowband is sufficient after the cat. The ECU compares pre/post-cat switching for OBD (`efi.md` §8, `emissions_certification.md`) |
 | Knock | Detonation / ign safety | CP3 factory knock sensor (if fitted) — else add piezo |
 | Battery voltage | Injector/coil dead-time comp | STM32 ADC: divider + RC + TVS |
 
@@ -34,6 +35,8 @@ On a harvested CP3 you **interface to the engine's factory sensors** (characteri
 Characterize every factory CP3 sensor's type, range and connector on the bench — the ECU adapts to the engine's sensors; you don't re-source them. Add only the wideband (LSU 4.9 + CJ125).
 
 ## 3 · Connector Architecture
+
+*Built to the **mil-spec** reliability standard (`electrical.md` §0): M22759 wire, mil-derived connectors (Deutsch Autosport / Souriau 8STA on critical runs, DTM/AMPSEAL elsewhere), M22520 crimps, minimal connector count.*
 
 | Role | Connector | Notes |
 |---|---|---|
@@ -116,12 +119,14 @@ The two domains are isolated: a maps/app crash on the A53 side cannot take down 
 
 | Item | Spec | Notes |
 |---|---|---|
-| Display | **6.86" 1280×480 IPS "bar" — ~181 × 67 mm module (~18 cm wide), MIPI-DSI 4-lane (direct to the 8M Plus, no bridge), ≥1000 nits** `[BUY]`. Narrowest bar that clears the ~18–22 cm fork span; 2.67:1 aspect (a touch taller than 1280×400 — read as extra gauge height). Reference part: Aptus 6.86" 480×1280 MIPI 1000-nit | **Origin: China** (bar-panel integrators Aptus / CDTech, Shenzhen; automotive glass from Taiwan — Innolux / AUO). **Accepted as a documented exception to the CA/MX/EU sourcing rule** — no CA/MX/EU bar-panel source exists (cf. the Japanese-engine exception). Confirm on the production part: **optical bonding, −30/+85 automotive grade, ambient-light-sensor auto-dim** — the reference sample is −20/+70 and air-bonded |
+| Display | **6.86" 1280×480 IPS "bar" — ~181 × 67 mm module (~18 cm wide), MIPI-DSI 4-lane (direct to the 8M Plus, no bridge), ≥1000 nits, NON-touch** `[BUY]`. **Config/menu via dedicated physical buttons on the cockpit bezel** (up/down/select/back) — glove-friendly, vibration- and weather-proof, tactical per the army × café identity; no touchscreen. Narrowest bar that clears the ~18–22 cm fork span; 2.67:1 aspect (a touch taller than 1280×400 — read as extra gauge height). Reference part: Aptus 6.86" 480×1280 MIPI 1000-nit | **Origin: China** (bar-panel integrators Aptus / CDTech, Shenzhen; automotive glass from Taiwan — Innolux / AUO). **Accepted as a documented exception to the CA/MX/EU sourcing rule** — no CA/MX/EU bar-panel source exists (cf. the Japanese-engine exception). Confirm on the production part: **optical bonding, −30/+85 automotive grade, ambient-light-sensor auto-dim** — the reference sample is −20/+70 and air-bonded |
 | Cameras | **2× MIPI-CSI** via the dual ISP (rear + blind-spot) | The 8M Plus has two ISPs / two camera inputs — good for two cameras; more than two needs muxing or extra hardware |
 | Connectivity | **Wi-Fi 5 (802.11ac) / BT 5** (on-module on the Verdin — Wi-Fi 5 is ample for a cockpit; add an M.2 Wi-Fi 6 card only if wanted); **cellular M.2 modem + GNSS** for live nav | |
 | Vehicle bus | **Dual CAN-FD** (native on the 8M Plus) to the custom ECU | Feeds the M7 safety cluster |
 
 **Software.** A full embedded-Linux program on the A53 domain: **Yocto BSP** (or **Android Automotive OS**, NXP-supported, for a phone-like UX) hosting the maps engine, camera pipelines, connectivity stacks and HMI framework — **Qt**, or **Slint** to keep some Rust coherence (Slint runs on both i.MX Linux and MCUs). Separate **Zephyr** safety firmware on the M7 for telltales + CAN, plus boot orchestration between the two domains.
+
+**HMI theme — tactical.** Per the army × café identity (`README.md`), the cockpit UI reads as **military instrumentation, not glossy infotainment**: high-contrast, glanceable, monochrome/muted with a single accent, mission-computer layout. Matches the sealed mil-spec hardware (`electrical.md` §0).
 
 **Reality check.** This converts "instrument cluster" into "cockpit + infotainment" — a second serious embedded system alongside the Rust ECU, and a full Linux program (BSP + maps + cameras + connectivity), not a weekend cluster. Two things to nail early: camera count/resolution vs the ISP ceiling, and the automotive power/EMC design for a Linux computer hung off a motorcycle loom.
 
@@ -150,15 +155,17 @@ The two domains are isolated: a maps/app crash on the A53 side cannot take down 
 | ECU + injectors + coils (running) | ~50–70 |
 | Fuel pump | ~50–70 |
 | Ride-by-wire (avg / peak) | ~10 / ~50 |
-| Cooling fan (when on) | ~80–120 |
+| Cooling fan (when on) | ~120–200 (extreme-cooling high-CFM/dual fan — `engine.md` §3) |
 | LED lighting (head/tail/signals) | ~40–60 |
 | i.MX cockpit SoM + display | ~20–30 |
 | Cameras + modem + GNSS | ~5–10 |
 | DC-DC conversion losses | ~10–20 |
 | **Cruise (fan off)** | **~200–250** |
-| **Worst case (idle, fan on, cockpit live)** | **~330–380** |
+| **Worst case (hot idle, extreme-cooling fan, cockpit live)** | **~370–460** |
 
-**Verify on the bench (project rule — don't invent the curve).** Yamaha publishes one rated-output point, not a curve; the per-rev figures above are a representative PM-magneto model. Before locking the reg/rec and battery: confirm the rated point on the donor microfiche, **measure stator output at idle**, and sum the actual accessory draw. Only if the measured idle balance can't be closed does the **rewound higher-output stator** (Tier 3) come into play — at the cost of permanent parasitic drag and idle heat.
+**Extreme cooling tightens this.** The high-CFM fan (`engine.md` §3) runs hardest at **hot idle — exactly when the alternator is weakest — and it is *non-sheddable*** (it's protecting the engine in the heat). Firmware load-shedding can drop the cockpit/cameras/modem but **not** the fan, so the hot-idle deficit is larger than a normal build's. This **strengthens the case for the LiFePO4 buffer and, if the bench balance can't be closed, the rewound higher-output stator (Tier 3).**
+
+**Verify on the bench (project rule — don't invent the curve).** Yamaha publishes one rated-output point, not a curve; the per-rev figures above are a representative PM-magneto model. Before locking the reg/rec and battery: confirm the rated point on the donor microfiche, **measure stator output at idle**, and sum the actual accessory draw (**incl. the extreme-cooling fan**). Only if the measured idle balance can't be closed does the **rewound higher-output stator** (Tier 3) come into play — at the cost of permanent parasitic drag and idle heat.
 
 ---
 

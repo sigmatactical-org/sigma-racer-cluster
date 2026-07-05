@@ -113,7 +113,8 @@ Drivers: 3× low-side injector outputs, hardware-timed (one per cylinder), from 
 - **Sensor:** Bosch **LSU 4.9 + CJ125** over SPI (`electronics.md` §2); post-collector single sensor for the triple.
 - **Warmup:** CJ125 heater control; no closed-loop until light-off; protect sensor on overrun.
 - **Loop:** PI trim around stoich (λ=1) in the closed-loop region; **long-term fuel trim** learned into a correction table and persisted; open-loop enrichment for power/thermal protection zones.
-- **Emissions tie-in:** the tune holds stoich for the cat (`emissions_certification.md`); catalyst-overtemp protection. **OBD is in scope** — Sigma is a for-sale type-approved product, so the ECU must implement OBD to the Euro 5 stage (MIL + catalyst/misfire/sensor-rationality monitoring). Small-series relaxes some of it; scope real OBD, not none. A genuine firmware lift over the one-off — budget it.
+- **Sensors:** **pre-cat LSU 4.9 wideband** (closed-loop + tuning) + a **post-cat O₂** (factory Yamaha narrowband) for catalyst monitoring (`electronics.md` §2).
+- **Emissions tie-in:** the tune holds stoich for the cat (`emissions_certification.md`); catalyst-overtemp protection. **OBD is in scope** — Sigma is a for-sale type-approved product, so the ECU must implement OBD to the Euro 5 stage (MIL + misfire + sensor-rationality + **catalyst monitoring — comparing pre-cat vs post-cat O₂ switching**). Small-series relaxes some of it; scope real OBD, not none. A genuine firmware lift over the one-off — budget it.
 
 ## 9 · Safety architecture & fault handling
 
@@ -130,7 +131,7 @@ Drivers: 3× low-side injector outputs, hardware-timed (one per cylinder), from 
 | Lambda sensor fail | range/heater fault | drop to open-loop map, warn |
 | CLT/IAT/MAP fail | range/rationality | default + limp map, warn |
 | Overtemp (CLT) | threshold | fan force-on, power limit, warn (`electronics.md` §9) |
-| Undervoltage | Vbat | shed loads (PDM, `electrical.md`), protect start |
+| Undervoltage | Vbat | shed non-critical load relays (ECU-driven, `electrical.md`), protect start |
 | Firmware fault/hang | IWDG/WWDG | reset + limp restart |
 
 Every action raises a coded fault to the cockpit; nothing silently degrades.
@@ -153,7 +154,7 @@ Quickshifter (engine upgrade, `engine.md` §2) lives here: bidirectional — **i
 
 ## 12 · Bring-up & validation plan (gated)
 
-*No stage starts before the previous one's gate passes. This is the critical path of the whole build. The concrete step-by-step how-to for stages on the used engine is the **`development/mule-runbook.md`** (its phases map to the stages below).*
+*No stage starts before the previous one's gate passes. This is the critical path of the whole build. A concrete step-by-step how-to for the stages on the used engine lives in the ECU-on-mule dev runbook (working notes, its phases map to the stages below).*
 
 1. **Host logic** — decoder, tables, plausibility, fault matrix as pure Rust, `cargo test` with golden captures + fault injection. **Gate:** matrix green.
 2. **Board bring-up** — G474 board, clocks, defmt, ADC-DMA, timers, FDCAN loopback. **Gate:** all peripherals verified.
