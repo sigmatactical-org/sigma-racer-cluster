@@ -40,27 +40,27 @@
 | Performance tune | Custom-ECU dyno tune to the actual cat + intake — recovers the response/midrange the restricted OEM map leaves on the table, while holding closed-loop stoich for the certificate. Not a separate buy: part of the ECU work (see `electronics.md`) | `[LOCKED]` |
 | Quickshifter | **Bidirectional quickshifter / autoblipper** — firmware-native: the ECU already owns ignition cut + ride-by-wire throttle, so clutchless up/down shifts cost almost nothing to add (see `electronics.md` §6) | `[LOCKED]` feature |
 | Intake | Velocity stacks + premium filter (DNA / Sprint) into a bespoke airbox; retune to suit | `[PENDING]` |
-| Cooling | **Uprated thermal** — higher-capacity alloy radiator + **oil cooler** + premium silicone hoses. Genuinely worth it: tight featherbed packaging, front-mount radiator, black bike in hot-market sun | `[PENDING]` recommended |
+| Cooling | **Extreme cooling `[LOCKED]`** (hot-climate — Mexico pilot market, black bike, tight featherbed): oversized alloy radiator + **dedicated oil cooler** + high-CFM (poss. dual) ECU fan + forced-airflow ducting/shroud + high-perf coolant + hot-climate thermostat. Full detail in §3 | `[LOCKED]` |
 | Covers / finish | Billet engine covers (CNC Racing / Gilles), flat-black per the finish rule; titanium engine fasteners; iridium plugs. Jewellery — the factory clutch is retained, so a billet clutch cover is cosmetic | `[PENDING]` |
 
 **Avoid** (breaks Euro 5+ and/or reliability on a one-off): high-compression pistons, hot cams, port-and-polish, de-cat. The CP3 is at its best breathing freely and tuned well, not bored and cammed.
 
-## 3 · Cooling system (install)
+## 3 · Cooling system (install) — extreme
 
-*Liquid-cooled CP3 in a tight featherbed — the frame is built **around** the engine + a front-mount radiator (`chassis.md` §1). Cooling is Yamaha-first (rad + fan come with the donor); the packaging and routing are bespoke, and the uprated-thermal option is in §2.*
+*Liquid-cooled CP3 in a cooling-hostile package (enclosed featherbed, front-mount rad, black bike, hot pilot market). Spec'd for **extreme hot-weather capability** — oversized rad + oil cooler + high-CFM forced airflow — not bare factory cooling. Fan control + overtemp derate live in the ECU (`electronics.md` §6, `efi.md` §9).*
 
 | Item | Spec | Status |
 |---|---|---|
-| Radiator | CP3 factory radiator retained (Yamaha-first), front-mounted; **higher-capacity alloy rad optional** (see §2 — worth it for the tight packaging + hot markets) | `[BUY]` donor / `[PENDING]` upgrade |
-| Fan | Factory fan, **ECU-controlled / thermostatic** (aux PWM/GPIO — `electronics.md` §6); kept off the alternator at idle unless coolant demands it (`electronics.md` §9) | `[BUY]` / `[BESPOKE]` control |
+| Radiator | **Oversized alloy radiator** — max frontal area / thicker higher-fin core that packages in the featherbed; factory rad kept only as fallback | `[LOCKED]` / `[BESPOKE]`+`[BUY]` |
+| Oil cooler | **Dedicated engine oil cooler** (thermostatic sandwich-plate take-off), placed for clean airflow — the big win for sustained hot-weather load | `[LOCKED]` / `[BUY]` |
+| Fan | **High-CFM electric fan (possibly dual) on a shroud**, ECU-controlled/thermostatic (`electronics.md` §6); sized for **hot-weather idle-in-traffic** (worst case — no ram air). ⚠ Higher fan draw stresses the idle charging balance (`electronics.md` §9) | `[BESPOKE]` |
+| Airflow / ducting | Bespoke ducting + fan shroud to **force air through the core** — in a tight featherbed airflow, not just core size, is the limit | `[BESPOKE]` |
+| Coolant + thermostat | High-performance coolant; **hot-climate thermostat** opening temp; premium silicone hoses | `[BUY]` |
 | Water pump | Engine-internal (CP3 mechanical) | — |
-| Thermostat | Factory | `[BUY]` donor |
-| Coolant temp | Factory CLT sensor read by the ECU (`electronics.md` §2) | — |
-| Hoses / routing | **Bespoke** routing around the narrow inline-3; premium silicone (see §2) | `[BESPOKE]` |
-| Expansion / overflow | Bespoke expansion + catch tank, packaged in the frame | `[BESPOKE]` |
-| Oil cooler | Optional uprated-thermal item (see §2) — placement for clean airflow | `[PENDING]` |
+| Temp sensing | Factory CLT + **added oil-temp sensor** → ECU (overtemp fan force-on + power derate, `efi.md` §9) | `[BUY]` |
+| Expansion / overflow | Bespoke expansion + catch tank, adequate volume, packaged in the frame | `[BESPOKE]` |
 
-**Packaging note.** The front-mount radiator + fan clearance + airflow path must be resolved on the frame jig (`chassis.md`); a black bike in hot markets and the enclosed featherbed argue for the alloy-rad + oil-cooler option rather than bare factory cooling.
+**Packaging + interactions.** Airflow is the real constraint in the enclosed featherbed — force it with ducting + a fan shroud, resolved on the frame jig (`chassis.md`). Two couplings to hold: (1) the **radiator guard** (chassis protection) must be **airflow-open mesh**, not a choke; (2) the high-CFM fan runs hardest at **hot idle exactly when the alternator is weakest** — size the charging + LiFePO4 buffer for it (`electronics.md` §9).
 
 ## 4 · Fuel system
 

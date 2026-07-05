@@ -70,7 +70,7 @@
 |---|---|---|
 | Bash / skid plate | Alloy or ti sump/engine guard — protects the CP3 cases + exhaust collector; suits the rally-tire scrambler stance | `[PENDING]` |
 | Engine / crash guards | Slim tubular guards or frame sliders protecting cases + tank; flat black | `[PENDING]` |
-| Radiator guard | Mesh / CNC guard for the front-mount radiator (stone/debris — ties to cooling, `engine.md` §3) | `[PENDING]` |
+| Radiator guard | **Airflow-open mesh** guard for the front-mount radiator (stone/debris) — must **not choke the extreme cooling** (`engine.md` §3) | `[PENDING]` |
 | Hand guards | *Optional* minimal tactical hand guards (weather/debris) — balance against the café-clean cockpit | `[PENDING]` |
 
 ## 2 · Front End

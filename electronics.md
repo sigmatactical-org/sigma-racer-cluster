@@ -154,15 +154,17 @@ The two domains are isolated: a maps/app crash on the A53 side cannot take down 
 | ECU + injectors + coils (running) | ~50–70 |
 | Fuel pump | ~50–70 |
 | Ride-by-wire (avg / peak) | ~10 / ~50 |
-| Cooling fan (when on) | ~80–120 |
+| Cooling fan (when on) | ~120–200 (extreme-cooling high-CFM/dual fan — `engine.md` §3) |
 | LED lighting (head/tail/signals) | ~40–60 |
 | i.MX cockpit SoM + display | ~20–30 |
 | Cameras + modem + GNSS | ~5–10 |
 | DC-DC conversion losses | ~10–20 |
 | **Cruise (fan off)** | **~200–250** |
-| **Worst case (idle, fan on, cockpit live)** | **~330–380** |
+| **Worst case (hot idle, extreme-cooling fan, cockpit live)** | **~370–460** |
 
-**Verify on the bench (project rule — don't invent the curve).** Yamaha publishes one rated-output point, not a curve; the per-rev figures above are a representative PM-magneto model. Before locking the reg/rec and battery: confirm the rated point on the donor microfiche, **measure stator output at idle**, and sum the actual accessory draw. Only if the measured idle balance can't be closed does the **rewound higher-output stator** (Tier 3) come into play — at the cost of permanent parasitic drag and idle heat.
+**Extreme cooling tightens this.** The high-CFM fan (`engine.md` §3) runs hardest at **hot idle — exactly when the alternator is weakest — and it is *non-sheddable*** (it's protecting the engine in the heat). Firmware load-shedding can drop the cockpit/cameras/modem but **not** the fan, so the hot-idle deficit is larger than a normal build's. This **strengthens the case for the LiFePO4 buffer and, if the bench balance can't be closed, the rewound higher-output stator (Tier 3).**
+
+**Verify on the bench (project rule — don't invent the curve).** Yamaha publishes one rated-output point, not a curve; the per-rev figures above are a representative PM-magneto model. Before locking the reg/rec and battery: confirm the rated point on the donor microfiche, **measure stator output at idle**, and sum the actual accessory draw (**incl. the extreme-cooling fan**). Only if the measured idle balance can't be closed does the **rewound higher-output stator** (Tier 3) come into play — at the cost of permanent parasitic drag and idle heat.
 
 ---
 
