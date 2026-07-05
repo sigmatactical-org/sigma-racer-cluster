@@ -154,7 +154,7 @@ Quickshifter (engine upgrade, `engine.md` §2) lives here: bidirectional — **i
 
 ## 12 · Bring-up & validation plan (gated)
 
-*No stage starts before the previous one's gate passes. This is the critical path of the whole build. The concrete step-by-step how-to for stages on the used engine is the **`development/mule-runbook.md`** (its phases map to the stages below).*
+*No stage starts before the previous one's gate passes. This is the critical path of the whole build. A concrete step-by-step how-to for the stages on the used engine lives in the ECU-on-mule dev runbook (working notes, its phases map to the stages below).*
 
 1. **Host logic** — decoder, tables, plausibility, fault matrix as pure Rust, `cargo test` with golden captures + fault injection. **Gate:** matrix green.
 2. **Board bring-up** — G474 board, clocks, defmt, ADC-DMA, timers, FDCAN loopback. **Gate:** all peripherals verified.

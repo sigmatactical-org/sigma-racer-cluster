@@ -20,7 +20,7 @@ Two domains summed into one machine: a bespoke chromoly featherbed chassis (**`c
 
 # Documents
 
-Sigma is specified across ten files. This one is the **hub** (strategy, markets, sourcing, finish, status-tag legend); the nine companions carry the domain detail.
+Sigma is specified across nine files. This one is the **hub** (strategy, markets, sourcing, finish, status-tag legend); the eight companions carry the domain detail. *(Working/dev notes live in the untracked `development/` folder — not part of the spec set.)*
 
 | File | Contents |
 |---|---|
@@ -29,7 +29,6 @@ Sigma is specified across ten files. This one is the **hub** (strategy, markets,
 | **`bodywork.md`** | Bodywork & ergonomics — tank, seat/cowl, subframe, fenders, rider triangle, hand/foot controls |
 | **`electronics.md`** | ECU hardware, sensor stack, connectors, i.MX 8M Plus digital cockpit (§8), charging & power budget (§9) |
 | **`efi.md`** | ECU **firmware** — real-time architecture, trigger decode, fuel/ignition, ride-by-wire safety, faults, comms, bench→dyno→road bring-up |
-| **`development/mule-runbook.md`** | ECU-on-mule how-to — concrete step-by-step to develop/prove the ECU on a used CP3, with per-phase gates |
 | **`electrical.md`** | Electrical, lighting & harness — bespoke loom, power distribution, battery, lighting, switchgear |
 | **`emissions_certification.md`** | Euro 5+ technical target, per-market homologation paths, emissions hardware + road-legal equipment checklists |
 | **`build.md`** | Build plan — mass target, cost budget, procurement/lead times, phases, test & sign-off |
