@@ -48,7 +48,7 @@
 | Master cylinder | Brembo — integrated into the rearset pedal (`bodywork.md` §2) | `[BUY]` |
 | Line | Braided stainless — Spiegler / Goodridge (as front) | `[BUY]` |
 
-**ABS — decided: donor OEM Yamaha ABS.** Fit the new CP3 donor's **OEM Yamaha ABS** — modulator + front/rear wheel-speed sensors + tone rings, **new with the donor** (no calibratable standalone road ABS exists to buy; individual approval likely *exempts* a one-off since Reg 168/2013's ABS mandate is type-approval only — confirm per market — but it's fitted anyway for safety). Requires: **Kineo wheels ordered with tone-ring provision** (front + rear rows), front + rear brake lines routed **through the modulator**, and the **ABS↔ECU CAN handshake** (`efi.md` §10–11, same class as the immobiliser). Cockpit ABS telltale already provided (`electronics.md` §8). Logged in `emissions_certification.md`.
+**ABS — decided: donor OEM Yamaha ABS.** Fit the new CP3 donor's **OEM Yamaha ABS** — modulator + front/rear wheel-speed sensors + tone rings, **new with the donor** (no calibratable standalone road ABS exists to buy). **ABS is mandatory** now that Sigma is a for-sale type-approved product (>125 cc, EU/UK/CA) — must be integrated into a certified braking system (`emissions_certification.md`). Requires: **Kineo wheels ordered with tone-ring provision** (front + rear rows), front + rear brake lines routed **through the modulator**, and the **ABS↔ECU CAN handshake** (`efi.md` §10–11, same class as the immobiliser). Cockpit ABS telltale already provided (`electronics.md` §8). Logged in `emissions_certification.md`.
 
 ### Final drive (chain & gearing)
 

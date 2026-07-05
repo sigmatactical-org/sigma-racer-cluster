@@ -113,7 +113,7 @@ Drivers: 3× low-side injector outputs, hardware-timed (one per cylinder), from 
 - **Sensor:** Bosch **LSU 4.9 + CJ125** over SPI (`electronics.md` §2); post-collector single sensor for the triple.
 - **Warmup:** CJ125 heater control; no closed-loop until light-off; protect sensor on overrun.
 - **Loop:** PI trim around stoich (λ=1) in the closed-loop region; **long-term fuel trim** learned into a correction table and persisted; open-loop enrichment for power/thermal protection zones.
-- **Emissions tie-in:** the tune holds stoich for the cat (`emissions_certification.md`); catalyst-overtemp protection; small-series route means **no full OBD-II** required (keeps diagnostic scope sane — decide before locking cal scope).
+- **Emissions tie-in:** the tune holds stoich for the cat (`emissions_certification.md`); catalyst-overtemp protection. **OBD is in scope** — Sigma is a for-sale type-approved product, so the ECU must implement OBD to the Euro 5 stage (MIL + catalyst/misfire/sensor-rationality monitoring). Small-series relaxes some of it; scope real OBD, not none. A genuine firmware lift over the one-off — budget it.
 
 ## 9 · Safety architecture & fault handling
 

@@ -1,32 +1,43 @@
 # Sigma — Emissions & Homologation
 
-*Companion to `README.md`. Path chosen: a **new** Yamaha CP3 engine, run on the custom STM32/Rust ECU, homologated to a current standard.*
+*Companion to `README.md`. **Sigma is a low-volume manufactured product for sale — not a one-off** — so the *type* must be **certified / type-approved for market**, not individually approved per unit. Markets: **EU, UK, Canada, Mexico** now; **US is a later phase** (EPA + CARB + NHTSA — the largest single effort, deferred). Path: a new Yamaha CP3 on the custom STM32/Rust ECU, certified to a current standard.*
 
 ## Premise
 
-The engine is a **new Yamaha CP3** — a current **Euro 5** powerplant. That's a head start: the combustion, cat and closed-loop are already designed to meet Euro 5. **But** swapping in the custom ECU and a custom (catalysed) exhaust takes it out of Yamaha's homologated configuration, so the one-off must be **re-homologated** on its own merits. Net: the Euro 5 base makes hitting the standard far easier, but it doesn't transfer Yamaha's certificate to your bike.
+The engine is a **new Yamaha CP3** — a current **Euro 5** powerplant: combustion, cat and closed-loop already designed to meet Euro 5. **But** the custom ECU + custom (catalysed) exhaust take it out of Yamaha's homologated configuration, so — **as a product for sale** — the *type* must be certified on its own merits, and you carry **manufacturer obligations** a one-off never had (type-approval, Conformity of Production, a technical file, a functional-safety case for the ride-by-wire). The Euro 5 base makes the emissions target far easier, but Yamaha's certificate does **not** transfer.
 
 ## Technical target — one spec for all markets
 
-Hold the build to **Euro 5+** (the strictest of the target markets; in force in the EU since 1 Jan 2024). The CP3 already runs the right architecture; preserve and tune it:
+Hold the build to **Euro 5+** (strictest of the target markets; in force in the EU since 1 Jan 2024). The CP3 already runs the right architecture; preserve and tune it:
 
 - **Closed-loop stoichiometric fuelling** — the custom ECU runs closed-loop lambda (add LSU 4.9 + CJ125); tune to the limits.
-- **Catalytic converter** in the collector — match/keep cat volume appropriate to the CP3's Euro 5 calibration.
+- **Catalytic converter** in the collector — cat volume matched to the CP3's Euro 5 calibration.
 - **Evaporative (charcoal) canister** + purge valve.
+- **On-board diagnostics (OBD)** to the Euro 5 stage — see OBD note (now **in scope** because it's for sale).
 
-Pass EU individual approval to Euro 5+ and it comfortably clears UK approval and Canadian/Mexican in-use inspection.
+Certify the type to Euro 5+ and the same hardware clears UK, Canadian and Mexican requirements; the US (later) needs its own emissions cert.
 
-## Paperwork path by market
+## Paperwork path by market — for sale, low-volume manufacturer
 
-| Market | Path | Outcome |
+| Market | Path (for sale) | Outcome |
 |---|---|---|
-| **EU** | National individual approval / small-series type-approval under Reg. (EU) 168/2013. Small-series is exempt from full OBD II. | Genuine current-standard **certificate** |
-| **UK** | Individual Vehicle Approval (IVA) / Motorcycle Single Vehicle Approval (MSVA); aligned with the 168/2013 framework post-Brexit. | **Certificate** (per-unit approval) |
-| **Canada** | Federal emission rules apply to vehicles built/imported *for sale*; a personal one-off isn't federally certified. Motorcycle limits are harmonized with US EPA. Registered **provincially** (safety + any in-use test). | **Provincial registration** + inspection — no per-unit cert |
-| **Mexico** | SEMARNAT NOMs (may follow US or EU limits). Road-legality via **state registration + periodic *verificación*** where the state runs it (e.g. CDMX, Guadalajara). | **State registration** + inspection — no per-unit cert |
-| **US** | EPA requires an engine-family Certificate of Conformity; there is no per-unit approval. Builder allowances are narrow: one exempt kit bike per lifetime, or ≤24/yr "custom" bikes that are display-only. | **Out** — the modified one-off is uncertified (the CP3's factory cert doesn't carry once you change ECU/exhaust); display-only, dropped from the road target |
+| **EU** | **Small-series type-approval** under Reg. (EU) 168/2013 (annual per-type volume caps; Euro 5+; **ABS mandatory**; OBD per stage; **Conformity of Production**). | **Type approval** → sell across the EU, build to type |
+| **UK** | **GB small-series type approval** (post-Brexit GB scheme, aligned to 168/2013). | GB type approval |
+| **Canada** | **Transport Canada** — manufacturer meets **CMVSS**, applies a **National Safety Mark**; emissions to **ECCC / US-EPA-harmonized** limits. *(No longer a personal provincial registration — you're selling.)* | Federal compliance to sell |
+| **Mexico** | **NOM homologation** — NOM-042-SEMARNAT (emissions) + safety NOMs; manufacturer/importer registration. | NOM compliance |
+| **US** *(later phase)* | **EPA** engine-family Certificate of Conformity + **CARB** (California Executive Order) + **NHTSA / FMVSS** (122 brakes/ABS, 108 lighting, 123 controls…). | **Deferred** — largest cost; Phase 2 |
 
-**Net:** EU/UK give an actual certificate; Canada/Mexico give registration + an inspection the same hardware passes; the US is not a road-legal target under this path.
+**Net:** you type-approve the **type** once per regime, then build every unit to it under Conformity of Production. **ABS and OBD are now mandatory** (the one-off exemptions no longer apply). US is deferred to a later phase.
+
+## Manufacturer obligations (selling, not building)
+
+Obligations a one-off never carried — these are now core scope:
+
+- **Type-approval** of the vehicle type (small-series) per regime, then **Conformity of Production (CoP)** — every unit built to the approved type, with audit.
+- **Manufacturer identity** — WMI / VIN assignment, statutory data plate, and a **technical file / information folder** per market.
+- **Functional-safety case** for the safety-critical **ride-by-wire** (and the ABS integration): documented hazard analysis + the independent monitor / fail-safe (`efi.md` §7). Motorcycles sit largely outside formal ISO 26262 *certification*, but **product-liability exposure makes a real safety case mandatory in practice** — and raises the value of the i.MX 95 / ASIL-B upgrade path for the cockpit (`electronics.md` §8).
+- **EMC type-approval**, drive-by **noise**, and each market's construction requirements (road-legal checklist below).
+- **Engage a Technical Service / homologation consultant early** (e.g. TÜV, VCA, or a national approval authority) — small-series type-approval is a program, not a form.
 
 ## Hardware checklist
 
@@ -34,29 +45,30 @@ Pass EU individual approval to Euro 5+ and it comfortably clears UK approval and
 - [ ] Catalytic converter (collector)
 - [ ] Evap / charcoal canister + purge valve
 - [ ] Catalysed exhaust system — ties to the open exhaust decision in `engine.md`
-- [ ] **Tire speed rating vs certified top speed** — fitted tires must be rated ≥ the bike's approved top speed. Front is Pirelli Scorpion Rally STR 120/70-17 **58H (210 km/h)**; a standalone CP3 runs near that, so confirm 58H clears the certified top speed (or declare/restrict top speed) before approval. Rear 170/60-17 72V (240 km/h) is clear. **Addressed by the ≤210 km/h top-speed target (`build.md` §1)** — gear/declare to stay within the 58H front; confirm at approval. (See tire note in `chassis.md`.)
+- [ ] **OBD to the Euro 5 stage** — MIL + catalyst/misfire/sensor monitoring in the ECU (`efi.md` §8)
+- [ ] **Tire speed rating vs certified top speed** — fitted tires must be rated ≥ the certified top speed. Front is Pirelli Scorpion Rally STR 120/70-17 **58H (210 km/h)**; **addressed by the ≤210 km/h top-speed target (`build.md` §1)** — gear/declare to stay within the 58H front; confirm at approval. Rear 170/60-17 72V (240 km/h) is clear. (Tire note in `chassis.md`.)
 
 ## Road-legal equipment (approval beyond emissions)
 
-*Emissions is one half of homologation; a new one-off must also pass the construction, braking and lighting requirements of the individual-approval / single-vehicle path (EU IVA / UK MSVA; CA/MX inspection). Confirm the exact list per market + vehicle class — items below are cross-referenced to where they're specified.*
+*A product for sale must pass the construction, braking and lighting requirements of type-approval in each market — confirm the exact list per regime + vehicle class. Items cross-referenced to where they're specified.*
 
-- [ ] **ABS — decided: fit the donor's OEM Yamaha ABS** (modulator + front/rear wheel-speed sensors + tone rings, **new with the new CP3 donor**). Note the ABS mandate is a *type-approval* rule — Reg 168/2013 does **not** apply to individual approval, so a one-off is likely **exempt** (confirm per market) — but it's fitted anyway for safety on a 117 hp bike. Requires Kineo **tone-ring provision** (`chassis.md` §1) and the **ABS↔ECU CAN handshake** (`efi.md` §10–11). Telltale in `electronics.md` §8.
+- [ ] **ABS — mandatory (for-sale type-approval) + decided: OEM Yamaha ABS.** For a product sold in EU/UK/CA (>125 cc), ABS is **required** — the earlier "individual-approval likely exempt" **no longer applies now that it's for sale**. The donor's OEM Yamaha ABS (modulator + front/rear wheel-speed sensors + tone rings, new with the donor) satisfies it; must be integrated into a **certified braking system** (EU braking reg now; FMVSS 122 in the US phase). Kineo **tone-ring provision** (`chassis.md` §1); ABS↔ECU CAN (`efi.md` §10–11); telltale (`electronics.md` §8).
 - [ ] **Dual independent brakes** — front (Brembo M4 + twin 320 mm) and rear (Brembo single) — `chassis.md`.
 - [ ] **Lighting (all LED, ECE-approved)** — headlight low/high + position/DRL; tail + brake light; front + rear indicators; plate light; rear + side reflectors — `electrical.md` §4.
 - [ ] **Mirrors** — road-legal field of view (`bodywork.md` §2).
 - [ ] **Audible warning (horn)** — `electrical.md` §5.
 - [ ] **Speedometer** — required units + tolerance; wheel-speed source (final drive, `chassis.md`) rendered on the cockpit (`electronics.md` §8).
 - [ ] **Number plate mount + illumination** — `bodywork.md`.
-- [ ] **Anti-theft / steering lock** — EU requires a device against unauthorized use; ties to the immobiliser decision (`electronics.md` §7).
+- [ ] **Anti-theft / steering lock** — required against unauthorized use; ties to the immobiliser decision (`electronics.md` §7).
 - [ ] **Chain guard** — final-drive contact protection (`chassis.md`).
 - [ ] **Sidestand** + start interlock (`electrical.md` §5).
 - [ ] **Noise / drive-by sound level** — approval limit; ties to the catalysed exhaust (`engine.md` §2).
-- [ ] **EMC (electromagnetic compatibility)** — an EU approval item, and a real design constraint here: the custom ECU + Linux cockpit + switching DC-DC must meet emission/immunity limits (`electronics.md`).
+- [ ] **EMC (electromagnetic compatibility)** — a type-approval item, and a real design constraint: the custom ECU + Linux cockpit + switching DC-DC must meet emission/immunity limits (`electronics.md`).
 
 ## OBD note
 
-EU small-series approval is exempt from full OBD II, which keeps the custom ECU's firmware scope manageable. The broader (non-small-series) route would add OBD II with catalyst monitoring — a real firmware lift. Decide the EU route (small-series vs. full) before locking the ECU's diagnostic scope.
+**OBD is now in scope** — a for-sale Euro 5+ bike needs on-board diagnostics per the applicable stage (MIL + catalyst / misfire / sensor-rationality monitoring). EU **small-series** type-approval relaxes *volume/administrative* burden and may soften some monitoring, but plan the ECU for **real OBD**, not none — this is a firmware lift the one-off would have skipped (`efi.md` §8). **Resolved: small-series type-approval for sale → scope the ECU for OBD; confirm the exact small-series relaxations with the approval authority.**
 
 ## Caveat
 
-**Not legal advice.** Emissions homologation is jurisdiction-specific and changes (Euro 5+ is barely a year old). Anything committed here should be confirmed with a homologation specialist and the type-approval / registration authority in each target market.
+**Not legal advice — and this is now a manufacturing homologation program, not a one-off.** Type-approval, OBD, ABS, EMC, functional safety and Conformity of Production across EU/UK/CA/MX (and later US EPA/CARB/NHTSA) are jurisdiction-specific, change often, and are far heavier than individual approval. **Engage a homologation consultant / Technical Service per market before committing** — treat the regulatory program as a first-class workstream in `build.md`, not paperwork at the end.

@@ -47,12 +47,12 @@
 | Electrical / harness | Loom + PDM/fusing + LiFePO4 + LED lighting + switchgear (`electrical.md`) | **$2–2.5k** |
 | Bodywork | Bespoke tank + seat/cowl + clip-ons/rearsets + controls (`bodywork.md`) | **$4–5k** |
 | Fabrication / bespoke | Frame, swingarm, yokes, stem, axle, brackets, cradle — **materials + machining** (in-house labour excluded) | **$3–6k** |
-| Homologation | Approval/inspection per market (ABS resolved — donor OEM unit, harvested new with the donor, so no separate ABS spend) (`emissions_certification.md`) | **$2–4k** |
+| Homologation **(NRE, not per-unit)** | **Small-series type-approval program** across EU/UK/CA/MX — Technical Service fees + EMC/emissions/noise/brake lab testing + Conformity-of-Production setup (US EPA/CARB/NHTSA is a later, larger phase). Far heavier than one-off approval (`emissions_certification.md`) | **~$30–100k+** |
 | **Subtotal** | | **~$42–55k** |
 | Contingency (~15–20%) | one-off / bespoke overruns | **~$7–11k** |
 | **Total (parts/materials)** | | **~$50–65k** |
 
-*Commissioned (not in-house) fabrication would raise the total substantially; so could the ABS route.*
+*The parts/materials subtotal is **per-bike** and **excludes the homologation NRE line** (that's a one-time program cost, not per unit). As a **low-volume manufacturer** the real model is **NRE (certification + tooling) + per-unit parts/labour × volume** — this table is only the per-unit parts side. Commissioned fabrication and the US phase would raise both. **build.md needs a proper manufacturer cost model (NRE vs per-unit vs unit economics) — flagged, not yet built.***
 
 ## 3 · Procurement & lead times
 
