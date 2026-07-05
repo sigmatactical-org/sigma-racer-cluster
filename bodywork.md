@@ -32,7 +32,7 @@
 | Clip-ons | Premium adjustable clip-ons to the FG 621 43 mm tubes (or bespoke) — café reach, above/below top yoke TBD by the yoke design (`chassis.md` §2) | `[PENDING]` |
 | Rearsets | Premium adjustable rearsets (billet) — shift/brake linkage to the CP3 gearbox + the rear master (`chassis.md`) | `[PENDING]` |
 | Seat height / reach | Set by subframe + seat build; validate rider fit against the frozen chassis geometry | `[PENDING]` |
-| Mirrors | Bar-end or stalk mirrors — must meet road-legal field-of-view for approval | `[PENDING]` |
+| Mirrors | **Decided: round mirrors, mounted off the handlebars** (stalk / bracket off the top yoke or cowl — keeps the bar area clean, suits the minimalist look). Must meet road-legal field-of-view for approval | `[LOCKED]` type / `[PENDING]` part |
 
 ## 3 · Controls & actuation
 
