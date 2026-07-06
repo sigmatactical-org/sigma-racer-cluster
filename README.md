@@ -10,7 +10,7 @@ display — ships as the `sigma-dash` binary on i.MX 8M Plus / i.MX 95 class har
 ## Quick start
 
 Requires sibling checkouts under `embedded/`:
-
+h
 ```
 embedded/
 ├── sigma-instrumentation/   # UI library + telemetry crate
@@ -40,10 +40,6 @@ bitbake sigma-racer
 | Environment | `/etc/sigma-racer-wingman/ui.env` |
 
 Full distribution docs: [`sigma-racer-wingman`](../sigma-racer-wingman/README.md).
-
-## Motorcycle build specification
-
-Design, homologation, and mechanical/electrical specs live under [`docs/spec/`](docs/spec/README.md).
 
 ## Requirements
 
