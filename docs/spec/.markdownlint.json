@@ -1,0 +1,7 @@
+{
+  "//": "Sigma spec docs use an intentional house style: compact tables, multiple H1 section banners per file, and dense prose/lists. These rules are disabled so the linter matches that style instead of flagging it.",
+  "MD013": false,
+  "MD025": false,
+  "MD032": false,
+  "MD060": false
+}

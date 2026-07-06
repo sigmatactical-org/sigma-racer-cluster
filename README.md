@@ -41,6 +41,10 @@ bitbake sigma-racer
 
 Full distribution docs: [`sigma-racer-wingman`](../sigma-racer-wingman/README.md).
 
+## Motorcycle build specification
+
+Design, homologation, and mechanical/electrical specs live under [`docs/spec/`](docs/spec/README.md).
+
 ## Requirements
 
 - Rust 1.86+ (Yocto meta-rust scarthgap)
