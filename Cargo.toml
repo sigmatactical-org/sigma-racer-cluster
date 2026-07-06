@@ -1,0 +1,25 @@
+[package]
+name = "sigma-racer"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+authors = ["Sigma Tactical Group contributors <https://github.com/sigmatactical-org>"]
+description = "Sigma Racer product app — Wingman cluster binary (sigma-dash)"
+repository = "https://github.com/sigmatactical-org/sigma-racer"
+homepage = "https://github.com/sigmatactical-org/sigma-racer"
+rust-version = "1.86.0"
+publish = false
+build = "build.rs"
+
+[[bin]]
+name = "sigma-dash"
+path = "src/main.rs"
+
+[dependencies]
+sigma-instrumentation = { path = "../sigma-instrumentation/sigma-instrumentation" }
+sigma-racer-wingman-telemetry = { path = "../sigma-instrumentation/sigma-racer-wingman-telemetry" }
+slint = { version = "=1.13.1", default-features = false, features = ["renderer-femtovg", "backend-winit", "compat-1-2"] }
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+
+[lints.rust]
+unsafe_code = "forbid"
