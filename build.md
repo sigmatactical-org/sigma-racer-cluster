@@ -74,7 +74,7 @@
 
 ### 2d · Business-model findings (the hard truths)
 
-1. **Harvesting a new donor per bike doesn't scale.** Buying a whole ~$10k MT-09 just to harvest one engine, per unit, is brutal — the rest is surplus. A manufacturer needs a **Yamaha crate-engine / OEM supply arrangement**, or the engine line alone wrecks the margin. *(Reframes `engine.md`'s "buy new donor" for production.)*
+1. **Harvesting a new donor per bike doesn't scale.** Buying a whole ~$10k MT-09 just to harvest one engine, per unit, is brutal — the rest is surplus. A manufacturer needs a **Yamaha crate-engine / OEM supply arrangement**, or the engine line alone wrecks the margin. *(Reframes `engine.md`'s "buy new donor" for production.)* **⚠ Validated at-risk (2026-07):** no public Yamaha CP3 crate program exists (Yamaha keeps the CP3 in-house). Nearest leads — TKRP complete R9/CP3 race-spare engines (NL), or a direct Yamaha OEM-supply deal (uncertain). **Crate supply is unconfirmed — carry a whole-donor pricing fallback until a deal is signed; if none lands, reconsider the engine or the premise before tooling spend.**
 2. **Software NRE dominates and fights low volume.** Two full embedded programs are a fixed sunk cost that *demands* volume to amortize — in direct tension with "low-volume / small-series."
 3. **Design-for-manufacture becomes mandatory.** Bespoke-everything + ~200 h/bike won't scale; convert one-off fabrication (frame, swingarm, yokes) to **jig-repeatable** production or per-unit labour stays high.
 4. **Position premium boutique.** At ~$45–65k COGS the only viable market is the **$80–130k+ bespoke tier**, competing on craft + tech, not price.
