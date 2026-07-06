@@ -81,7 +81,7 @@
 | Yokes | Bespoke (in-house) — cut to FG 621 43 mm tubes + featherbed neck + café-trail offset | `[BESPOKE]` |
 | Steering stem | Bespoke billet steel (4140 chromoly), heat-treated — not aluminium. Safety-critical: validate for steering loads | `[BESPOKE]` |
 | Headstock bearing | **Yamaha CP3-family tapered set — upper 25×47×15, lower 30×55×17** (+ seals). The asymmetric pair the MT-09/XSR900/XSR900 GP run — *not* a symmetric 30×55×17 both-ends set. Design the bespoke stem journals + frame-neck bore to these two sizes. Tapered roller = rigid, preload-adjustable. ⚠ Confirm the exact set on a **gen-2 (’21+) donor / current Yamaha microfiche** — the 2021 frame was redesigned; upper 25×47×15 / lower 30×55×17 is confirmed on gen-1 (’14–’18) and is the family norm, but verify it carries to the GP before cutting journals. | `[LOCKED]` |
-| Stem geometry reference | **Yamaha XSR900 GP** (gen-2 CP3 platform — MT-09/XSR900 ’21+ frame). Reference only; same-engine, same-power-class steering head, so a better-matched reference than a ~200 hp superbike stem. Final stem dims from a **measured donor stem + Yamaha microfiche**, never invented | `[LOCKED]` |
+| Stem geometry reference | **Yamaha XSR900 GP** (gen-2 CP3 platform — MT-09/XSR900 ’21+ frame). Reference only; same-engine, same-power-class steering head, so a better-matched reference than a ~200 hp superbike stem. Final stem dims from a **measured donor stem + Yamaha microfiche**, never invented. **The measurement donor is in hand: the mule is a new XSR900 GP (on order)** — measure its stem + confirm the bearing set during mule Phase 0/1 (dev runbook) | `[LOCKED]` |
 | Bearing kit | All Balls **22-2004** — MT-09/XSR900 set (upper 25×47×15 + lower 30×55×17, top+bottom+seals). The asymmetric set is the Yamaha middleweight norm (and shared with e.g. Suzuki Katana 600/750 ’89+), so sourcing stays trivial. Verify the gen-2/GP part number against a current catalog. | `[BUY]` |
 
 **Offset / trail.** Set at the yoke (bespoke). Final trail = featherbed neck rake + yoke offset — independent of the Yamaha stem (the stem only sets the bearing interface). Stem dimensions come from a measured XSR900 GP / CP3-family donor stem + Yamaha microfiche — never invented.
@@ -108,9 +108,9 @@
 
 ## 3 · Sourcing Summary (mechanical)
 
-| Buy now (catalog / new) | Buy used (prototyping) | Bespoke (one-off fabrication) |
+| Buy now (catalog / new) | Mule (prototyping) | Bespoke (one-off fabrication) |
 |---|---|---|
-| New CP3 donor (MT-09) — engine + box + RbW + sensors | Used CP3 (used MT-09) — ECU bench/proto mule | Featherbed frame (in-house) |
+| New CP3 donor (MT-09) — engine + box + RbW + sensors | New XSR900 GP (on order) — ECU proto + stem-geometry donor | Featherbed frame (in-house) |
 | Öhlins FG 621 fork (black) — Zodiac/EU | | Swingarm + monoshock linkage |
 | Öhlins STX 46 Blackline rear shock | | Triple yokes (43 mm) |
 | All Balls 22-2004 bearing kit (Yamaha set) | | Billet-steel steering stem |

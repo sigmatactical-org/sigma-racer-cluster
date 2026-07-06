@@ -41,7 +41,7 @@
 
 ### 2a · Per-unit parts/materials (production parts only)
 
-*Excludes the NRE items — the used mule, dev boards (EVK) and tooling live in §2b, not per bike.*
+*Excludes the NRE items — the mule (XSR900 GP), dev boards (EVK) and tooling live in §2b, not per bike.*
 
 | Bucket | Includes | Est. (USD) |
 |---|---|---|
@@ -87,7 +87,7 @@
 
 | Item | Order by | Lead | Arrives ~ | Gate / dependency |
 |---|---|---|---|---|
-| **Mule rig** (used CP3 + run stand + fuel/cooling/exhaust bench) | **T0 (Sep '26)** | — | T0 | Buy **first** — gates the whole ECU program; full BOM in the ECU-on-mule dev runbook |
+| **Mule** (**new XSR900 GP — on order**) + bench kit | **secured ('26)** | — | pre-T0 | ✔ Mule secured ahead of T0 — gates the whole ECU program. New, not disposable: runbook gate discipline is load-bearing. Doubles as the `chassis.md` stem-geometry measurement donor. Bench/instrumentation BOM in the ECU-on-mule dev runbook |
 | Display sample + driver board | T0 (Sep '26) | vendor sample | T0 + 4–6 wk | RFQ ready (6.86" 1280×480 MIPI 1000-nit) — `electronics.md` §8 |
 | Öhlins FG 621 fork | T0 + 1 (Oct '26) | catalog | ~2–4 wk | Confirm Zodiac package contents (axle/caliper mounts) at order |
 | **Kineo wheels (f+r)** | **T0 + 1 (Oct '26)** | **~18 wk** | **~Feb '27** | Order early — keys off the chosen 320 mm disc (`chassis.md`) |
@@ -99,7 +99,7 @@
 
 ## 4 · Build phases
 
-1. **ECU prototype** — bench + dyno the Rust ECU on a **used CP3 mule**: trigger decode, ride-by-wire, immobiliser handshake, fail-safes (`electronics.md`).
+1. **ECU prototype** — bench + dyno the Rust ECU on the **XSR900 GP mule (new, on order)**: trigger decode, ride-by-wire, immobiliser handshake, fail-safes (`electronics.md`). Mule is not disposable — runbook gate discipline is load-bearing.
 2. **Frame jig + chassis geometry** — freeze rake/trail/wheelbase/ride-height + the rising-rate linkage → *only then* order the built-to-order shock (`chassis.md`).
 3. **Rolling mock-up** — frame + forks + wheels + engine cradle; validate clearances (tire-to-arm/chain, radiator packaging).
 4. **Subsystems** — cooling, exhaust, electrical loom, cockpit, bodywork mock.
@@ -122,6 +122,6 @@
 
 # Caveats (build)
 
-1. **Sequence gates spend** — freeze geometry before the built-to-order shock; buy the used mule before the new engine; confirm the fork package before the wheels. Cheap checks gate expensive, irreversible steps.
+1. **Sequence gates spend** — freeze geometry before the built-to-order shock; prove the ECU on the mule before the build engine; confirm the fork package before the wheels. Cheap checks gate expensive, irreversible steps.
 2. **Two software programs run in parallel** — the Rust ECU and the Linux cockpit are each their own project (`electronics.md`); staff/schedule them as such, not as afterthoughts to the fabrication.
 3. **Nothing is measured until it's measured** — weights, costs and the charging curve here are targets; confirm on the real build.

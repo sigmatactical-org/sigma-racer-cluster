@@ -154,14 +154,14 @@ Quickshifter (engine upgrade, `engine.md` §2) lives here: bidirectional — **i
 
 ## 12 · Bring-up & validation plan (gated)
 
-*No stage starts before the previous one's gate passes. This is the critical path of the whole build. A concrete step-by-step how-to for the stages on the used engine lives in the ECU-on-mule dev runbook (working notes, its phases map to the stages below).*
+*No stage starts before the previous one's gate passes. This is the critical path of the whole build. A concrete step-by-step how-to for the stages on the mule lives in the ECU-on-mule dev runbook (working notes, its phases map to the stages below).*
 
 1. **Host logic** — decoder, tables, plausibility, fault matrix as pure Rust, `cargo test` with golden captures + fault injection. **Gate:** matrix green.
 2. **Board bring-up** — G474 board, clocks, defmt, ADC-DMA, timers, FDCAN loopback. **Gate:** all peripherals verified.
 3. **Bench signal-gen** — synthesized crank/cam → confirm angle stream + inj/ign timing on a scope against commands. **Gate:** timing within spec across an RPM sweep incl. accel.
 4. **Driver bench** — injector/coil low-side + COP drivers into dummy loads; dwell/pulse verified. **Gate:** no false fire, correct dwell vs Vbat.
 5. **RbW rig** — throttle body on the bench, plate watched; run the full fault-injection set live. **Gate:** every fault → fail-safe, no runaway. *Safety gate — no engine start before this passes.*
-6. **Engine on the used CP3 mule** — real trigger/sensors; first start; idle; closed-loop light-off; immobiliser resolved. **Gate:** stable idle + clean sync, fail-safes proven on a running engine.
+6. **Engine on the CP3 mule (XSR900 GP)** — real trigger/sensors; first start; idle; closed-loop light-off; immobiliser resolved. **Gate:** stable idle + clean sync, fail-safes proven on a running engine.
 7. **Dyno** — VE/ignition/lambda tune to Euro 5+; transient/warmup/overrun; knock characterization; quickshifter. **Gate:** map complete, emissions-clean, no knock.
 8. **Road shakedown** — heat, vibration, EMC, real-world transients on the mule, then the build engine. **Gate:** durability + rideability signed off (`build.md` §5).
 
@@ -187,4 +187,4 @@ Quickshifter (engine upgrade, `engine.md` §2) lives here: bidirectional — **i
 1. **The engine is unrideable until this is proven** — trigger, RbW, immobiliser, fail-safes and the tune all have to pass their gates; there is no shortcut around the bench and dyno.
 2. **Ride-by-wire safety is not optional rigor** — build and bench-prove the independent monitor + fail-safe before the motor ever drives the real plate. Gate 5 exists for a reason.
 3. **Characterize, don't invent** — every engine number here is measured on the CP3 + Yamaha data; the tables in this doc are architecture, not calibration.
-4. **Prototype on a used CP3** — do all of stages 1–7 on the cheap mule before the new build engine sees a single injection event.
+4. **Prototype on the mule** — do all of stages 1–7 on the XSR900 GP mule before the build engine sees a single injection event. The mule is *new* (no disposable-lump safety net): the stage gates are load-bearing — conservative ignition until knock is characterized, no skipped gates.
