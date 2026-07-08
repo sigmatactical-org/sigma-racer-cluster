@@ -3788,7 +3788,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "sigma-racer"
+name = "sigma-racer-cluster"
 version = "0.1.0"
 dependencies = [
  "chrono",
@@ -3798,13 +3798,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "sigma-racer-wingman-m7-can"
+version = "0.1.0"
+dependencies = [
+ "dbc-rs",
+]
+
+[[package]]
 name = "sigma-racer-wingman-telemetry"
 version = "0.1.0"
 dependencies = [
  "chrono",
- "dbc-rs",
  "serde",
  "serde_json",
+ "sigma-racer-wingman-m7-can",
 ]
 
 [[package]]

@@ -76,6 +76,10 @@ fn push_idle(ui: &SigmaDashboard) {
     ui.set_oil_c(52);
     ui.set_battery_v(13.1);
     ui.set_can_load(8);
+    ui.set_dtc(0);
+    ui.set_abs_active(false);
+    ui.set_tc_active(false);
+    ui.set_telemetry_live(false);
     ui.set_heading(0.0);
     ui.set_heading_label(SharedString::from("N"));
     ui.set_elevation(667);

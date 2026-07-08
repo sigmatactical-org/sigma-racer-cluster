@@ -1,18 +1,18 @@
 [package]
-name = "sigma-racer"
+name = "sigma-racer-cluster"
 version = "0.1.0"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 authors = ["Sigma Tactical Group contributors <https://github.com/sigmatactical-org>"]
-description = "Sigma Racer product app — Wingman cluster binary (sigma-dash)"
-repository = "https://github.com/sigmatactical-org/sigma-racer"
-homepage = "https://github.com/sigmatactical-org/sigma-racer"
+description = "Sigma Racer Wingman instrument cluster UI"
+repository = "https://github.com/sigmatactical-org/sigma-racer-cluster"
+homepage = "https://github.com/sigmatactical-org/sigma-racer-cluster"
 rust-version = "1.86.0"
 publish = false
 build = "build.rs"
 
 [[bin]]
-name = "sigma-dash"
+name = "sigma-racer-cluster"
 path = "src/main.rs"
 
 [dependencies]

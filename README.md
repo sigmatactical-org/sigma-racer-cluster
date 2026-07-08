@@ -1,25 +1,25 @@
-# Sigma Racer
+# Sigma Racer Cluster
 
 Production instrument cluster application for the **Sigma Racer Wingman** motorcycle
-display — ships as the `sigma-dash` binary on i.MX 8M Plus / i.MX 95 class hardware.
+display — ships as the `sigma-racer-cluster` binary on i.MX 8M Plus / i.MX 95 class hardware.
 
 | Binary | Role |
 |--------|------|
-| `sigma-dash` | Full-screen Slint cluster UI (CAN-FD telemetry from M7 safety core) |
+| `sigma-racer-cluster` | Full-screen Slint cluster UI (CAN-FD telemetry from M7 safety core) |
 
 ## Quick start
 
 Requires sibling checkouts under `embedded/`:
-h
+
 ```
 embedded/
 ├── sigma-instrumentation/   # UI library + telemetry crate
-└── sigma-racer/             # this repo
+└── sigma-racer-cluster/     # this repo
 ```
 
 ```bash
 # Production binary (idle telemetry — same as embedded target)
-cargo run --bin sigma-dash
+cargo run --bin sigma-racer-cluster
 
 # Panel-accurate local testing (800×480, matches imx8mp / QEMU virt)
 cd ../sigma-instrumentation && cargo virt
@@ -27,15 +27,15 @@ cd ../sigma-instrumentation && cargo virt
 
 ## Embedded build (Wingman)
 
-The Yocto recipe builds **`sigma-dash`** from this crate:
+The Yocto recipe builds **`sigma-racer-cluster`** from this crate:
 
 ```bash
-bitbake sigma-racer
+bitbake sigma-racer-cluster
 ```
 
 | Item | Value |
 |------|-------|
-| Binary | `/usr/bin/sigma-dash` |
+| Binary | `/usr/bin/sigma-racer-cluster` |
 | systemd | `cluster-ui.service` |
 | Environment | `/etc/sigma-racer-wingman/ui.env` |
 
