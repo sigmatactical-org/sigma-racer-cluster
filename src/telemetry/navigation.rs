@@ -1,6 +1,6 @@
 //! Window navigation while moving vs stopped.
 
-use sigma_instrumentation::SigmaDashboard;
+use sigma_instrumentation::{windows, SigmaDashboard};
 use slint::ComponentHandle;
 use std::cell::{Cell, RefCell};
 use std::rc::Rc;
@@ -57,22 +57,33 @@ pub fn wire(ui: &SigmaDashboard, session: &Rc<RefCell<Session>>) {
     slint::Timer::default().start(slint::TimerMode::Repeated, TICK, move || {
         if let Some(ui) = ui_weak.upgrade() {
             stopped_tick.set(ui.get_speed() == 0);
-            ui.set_nav_blocked_hint(!stopped_tick.get() && session_tick.borrow().current_window >= 4);
+            ui.set_nav_blocked_hint(
+                !stopped_tick.get()
+                    && session_tick.borrow().current_window > windows::PANEL_MAX,
+            );
         }
     });
 }
 
+/// Highest reachable window: every window when stopped, glanceable panels only
+/// while moving.
+fn max_window(stopped: bool) -> i32 {
+    if stopped {
+        windows::COUNT - 1
+    } else {
+        windows::PANEL_MAX
+    }
+}
+
 fn step(ui: &SigmaDashboard, session: Rc<RefCell<Session>>, stopped: bool, delta: i32) {
     let mut session = session.borrow_mut();
-    let max = if stopped { 8 } else { 3 };
-    let next = (session.current_window + delta).clamp(0, max);
+    let next = (session.current_window + delta).clamp(0, max_window(stopped));
     session.current_window = next;
     ui.set_current_window(next);
 }
 
 fn select(ui: &SigmaDashboard, session: Rc<RefCell<Session>>, stopped: bool, idx: i32) {
-    let max = if stopped { 8 } else { 3 };
-    let next = idx.clamp(0, max);
+    let next = idx.clamp(0, max_window(stopped));
     session.borrow_mut().current_window = next;
     ui.set_current_window(next);
 }

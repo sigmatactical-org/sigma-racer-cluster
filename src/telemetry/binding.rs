@@ -1,6 +1,6 @@
 //! Push [`VehicleState`] onto Slint dashboard properties.
 
-use sigma_instrumentation::{gauge, heading, set_speed_readout, SigmaDashboard};
+use sigma_instrumentation::{heading, set_needle_paths, set_speed_readout, SigmaDashboard};
 use sigma_racer_telemetry::VehicleState;
 use slint::SharedString;
 
@@ -29,10 +29,5 @@ pub fn apply_state(ui: &SigmaDashboard, state: &VehicleState) {
     ui.set_heading_label(SharedString::from(heading::heading_label(state.heading)));
     ui.set_elevation(state.elevation);
 
-    ui.set_swept_path(gauge::swept_path(rpm));
-    let (nl, ns, nr, no) = gauge::needle_paths(rpm);
-    ui.set_needle_left(nl);
-    ui.set_needle_spine(ns);
-    ui.set_needle_right(nr);
-    ui.set_needle_outline(no);
+    set_needle_paths(ui, rpm);
 }
