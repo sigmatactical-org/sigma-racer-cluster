@@ -17,7 +17,7 @@ path = "src/main.rs"
 
 [dependencies]
 sigma-instrumentation = { path = "../sigma-instrumentation/sigma-instrumentation" }
-sigma-racer-wingman-telemetry = { path = "../sigma-instrumentation/sigma-racer-wingman-telemetry" }
+sigma-racer-telemetry = { git = "ssh://git@github.com/sigmatactical-org/sigma-racer-telemetry.git", rev = "b09c0cc" }
 slint = { version = "=1.13.1", default-features = false, features = ["renderer-femtovg", "backend-winit", "compat-1-2"] }
 chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
 

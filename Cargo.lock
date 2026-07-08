@@ -3793,8 +3793,18 @@ version = "0.1.0"
 dependencies = [
  "chrono",
  "sigma-instrumentation",
- "sigma-racer-wingman-telemetry",
+ "sigma-racer-telemetry",
  "slint",
+]
+
+[[package]]
+name = "sigma-racer-telemetry"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "serde",
+ "serde_json",
+ "sigma-racer-wingman-m7-can",
 ]
 
 [[package]]
@@ -3802,16 +3812,6 @@ name = "sigma-racer-wingman-m7-can"
 version = "0.1.0"
 dependencies = [
  "dbc-rs",
-]
-
-[[package]]
-name = "sigma-racer-wingman-telemetry"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "serde",
- "serde_json",
- "sigma-racer-wingman-m7-can",
 ]
 
 [[package]]
