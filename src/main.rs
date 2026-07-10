@@ -3,12 +3,14 @@
 //! Live vehicle data replaces the idle loop via CAN-FD from the M7 safety core.
 
 mod app;
+mod connectivity;
 mod telemetry;
 mod vehicle;
 
 use sigma_instrumentation::{
     configure_window, ensure_panel_geometry, force_panel_scale_factor, init_gauge_art,
-    start_signal_blink, theme, DisplayConfig, SigmaDashboard,
+    start_signal_blink, start_updates_client, theme, DisplayConfig, SigmaDashboard,
+    UpdatesConfig,
 };
 use slint::ComponentHandle;
 use std::time::Duration;
@@ -36,6 +38,7 @@ fn main() -> Result<(), slint::PlatformError> {
     telemetry::attach(&ui);
     app::start_clock(&ui);
     let _signal_blink = start_signal_blink(&ui);
+    start_updates_client(&ui, UpdatesConfig::from_env());
 
     // Weston/winit may remap the surface after first map — letterbox again.
     let weak = ui.as_weak();

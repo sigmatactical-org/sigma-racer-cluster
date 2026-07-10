@@ -14,8 +14,8 @@ use std::rc::Rc;
 use std::time::Instant;
 
 use super::binding::apply_state;
-use super::navigation;
 use super::session::{Session, TICK};
+use crate::connectivity;
 
 /// Baked-in sample so `CLUSTER_TELEMETRY_SOURCE=replay` works with no arguments.
 const SAMPLE_LOG: &str = include_str!("../../testdata/sample-ride.log");
@@ -47,7 +47,7 @@ pub fn attach(ui: &SigmaDashboard) {
     );
 
     let session = Rc::new(RefCell::new(Session::new(None)));
-    navigation::wire(ui, &session);
+    connectivity::start(ui, &session);
 
     let frames = Rc::new(frames);
     let start = Rc::new(RefCell::new(Instant::now()));

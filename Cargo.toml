@@ -27,6 +27,7 @@ sigma-racer-telemetry = { path = "../sigma-racer-telemetry" }
 slint = { version = "=1.13.1", default-features = false, features = ["renderer-femtovg", "backend-winit", "compat-1-2"] }
 chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
 socketcan = { version = "3.5", optional = true }
+zbus = { version = "5", features = ["blocking-api"] }
 
 [lints.rust]
 unsafe_code = "forbid"

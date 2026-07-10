@@ -12,9 +12,8 @@ mod attach;
 mod binding;
 #[cfg(feature = "can-socket")]
 mod can_source;
-mod navigation;
 mod replay;
-mod session;
+pub(crate) mod session;
 
 use sigma_instrumentation::SigmaDashboard;
 

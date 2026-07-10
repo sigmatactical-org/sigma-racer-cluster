@@ -20,8 +20,8 @@ use std::rc::Rc;
 use std::time::{Duration, Instant};
 
 use super::binding::apply_state;
-use super::navigation;
 use super::session::{Session, TICK};
+use crate::connectivity;
 
 /// Treat the bus as live only while frames keep arriving.
 const CAN_STALE: Duration = Duration::from_millis(500);
@@ -47,7 +47,7 @@ pub fn attach(ui: &SigmaDashboard) {
     eprintln!("sigma-racer-cluster: receiving CAN on {iface}");
 
     let session = Rc::new(RefCell::new(Session::new(None)));
-    navigation::wire(ui, &session);
+    connectivity::start(ui, &session);
 
     let socket = Rc::new(socket);
     let last_frame_at: Rc<RefCell<Option<Instant>>> = Rc::new(RefCell::new(None));

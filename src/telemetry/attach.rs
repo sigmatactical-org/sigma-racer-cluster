@@ -7,8 +7,8 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 use super::binding::apply_state;
-use super::navigation;
 use super::session::{Session, RECONNECT_TICKS, TELEMETRY_STALE, TICK};
+use crate::connectivity;
 
 /// Subscribe to sigma-racer-vehicle and drive Slint properties from VSS snapshots.
 pub fn attach(ui: &SigmaDashboard) {
@@ -20,7 +20,7 @@ pub fn attach(ui: &SigmaDashboard) {
     }
 
     let session = Rc::new(RefCell::new(Session::new(initial)));
-    navigation::wire(ui, &session);
+    connectivity::start(ui, &session);
 
     let ui_weak = ui.as_weak();
     slint::Timer::default().start(slint::TimerMode::Repeated, TICK, move || {
