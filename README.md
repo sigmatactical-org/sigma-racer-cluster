@@ -25,6 +25,41 @@ cargo run --bin sigma-racer-cluster
 cd ../sigma-instrumentation && cargo virt
 ```
 
+## Telemetry / CAN test sources
+
+The live source is chosen at runtime by `CLUSTER_TELEMETRY_SOURCE`. All sources
+decode into `VehicleState`, map to `ClusterTelemetry`, and call
+`sigma_instrumentation::apply_telemetry` — the UI never sees raw CAN.
+
+| `CLUSTER_TELEMETRY_SOURCE` | Source |
+|----------------------------|--------|
+| `ipc` *(default)* | Subscribe to `sigma-racer-vehicle` over its Unix socket (production behaviour). |
+| `replay` | Replay a `candump -L` log through the DBC decoder with original timing, looping. Uses the baked-in [`testdata/sample-ride.log`](testdata/sample-ride.log) unless `CLUSTER_REPLAY_LOG` points elsewhere. |
+| `can` / `socketcan` | Read live frames off a SocketCAN interface (`CLUSTER_CAN_IFACE`, default `vcan0`). Requires `--features can-socket`. |
+
+```bash
+# Replay the baked sample ride — no hardware, no daemon
+CLUSTER_TELEMETRY_SOURCE=replay cargo run
+
+# Replay your own capture
+CLUSTER_REPLAY_LOG=/path/to/ride.log CLUSTER_TELEMETRY_SOURCE=replay cargo run
+
+# Live SocketCAN off vcan0 (bring the bus up first)
+sudo scripts/vcan-up.sh vcan0
+CLUSTER_TELEMETRY_SOURCE=can cargo run --features can-socket
+# …then feed it, e.g.:  canplayer -I testdata/sample-ride.log vcan0=can1
+```
+
+Regenerate the baked sample from the scripted ride:
+
+```bash
+cargo run --example gen_sample_log > testdata/sample-ride.log
+```
+
+> The `can` source consumes whatever populates the bus. On the vehicle the M7
+> safety core owns the CAN traffic and gateways it onto the Linux-visible bus;
+> for the bench, `vcan0` + `canplayer`/`cansend` (or the sample replay) stand in.
+
 ## Embedded build (Wingman)
 
 The Yocto recipe builds **`sigma-racer-cluster`** from this crate:

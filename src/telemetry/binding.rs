@@ -1,33 +1,44 @@
-//! Push [`VehicleState`] onto Slint dashboard properties.
+//! Map producer [`VehicleState`] → UI [`ClusterTelemetry`].
 
-use sigma_instrumentation::{heading, set_needle_paths, set_speed_readout, SigmaDashboard};
+use sigma_instrumentation::{apply_telemetry, ClusterTelemetry, GaugeScale, SigmaDashboard};
 use sigma_racer_telemetry::VehicleState;
-use slint::SharedString;
 
+use crate::vehicle::XSR900_GP;
+
+/// Convert decoded vehicle state into the UI-facing formatted message.
+pub fn to_cluster(state: &VehicleState) -> ClusterTelemetry {
+    ClusterTelemetry {
+        speed_kmh: state.speed,
+        rpm: state.rpm,
+        gear: state.gear,
+        at_redline: state.at_redline,
+        side_stand: state.side_stand,
+        riding_mode: state.riding_mode.clone(),
+        fuel_pct: state.fuel_pct,
+        coolant_c: state.coolant_c,
+        oil_c: state.oil_c,
+        odometer: state.odometer,
+        trip1: state.trip1,
+        trip2: state.trip2,
+        lean_angle: state.lean_angle,
+        gforce: state.gforce,
+        battery_v: state.battery_v,
+        can_load: state.can_load,
+        dtc: state.dtc,
+        abs_active: state.abs_active,
+        tc_active: state.tc_active,
+        heading: state.heading,
+        elevation: state.elevation,
+        signals_live: state.signals_live,
+    }
+}
+
+/// Push vehicle state through the shared instrumentation binding.
 pub fn apply_state(ui: &SigmaDashboard, state: &VehicleState) {
-    let rpm = state.rpm;
-    ui.set_rpm(rpm);
-    set_speed_readout(ui, state.speed.round() as i32);
-    ui.set_gear(state.gear as i32);
-    ui.set_at_redline(state.at_redline);
-    ui.set_side_stand(state.side_stand);
-    ui.set_riding_mode(SharedString::from(state.riding_mode.as_str()));
-    ui.set_fuel_pct(state.fuel_pct / 100.0);
-    ui.set_coolant_c(state.coolant_c as i32);
-    ui.set_oil_c(state.oil_c as i32);
-    ui.set_odometer(state.odometer.round() as i32);
-    ui.set_trip1(state.trip1);
-    ui.set_trip2(state.trip2);
-    ui.set_lean_angle(state.lean_angle);
-    ui.set_gforce(state.gforce);
-    ui.set_battery_v(state.battery_v);
-    ui.set_can_load(state.can_load as i32);
-    ui.set_dtc(state.dtc as i32);
-    ui.set_abs_active(state.abs_active);
-    ui.set_tc_active(state.tc_active);
-    ui.set_heading(state.heading);
-    ui.set_heading_label(SharedString::from(heading::heading_label(state.heading)));
-    ui.set_elevation(state.elevation);
+    let gauge = XSR900_GP.gauge_scale();
+    apply_state_with_gauge(ui, state, &gauge);
+}
 
-    set_needle_paths(ui, rpm);
+pub fn apply_state_with_gauge(ui: &SigmaDashboard, state: &VehicleState, gauge: &GaugeScale) {
+    apply_telemetry(ui, &to_cluster(state), gauge);
 }

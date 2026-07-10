@@ -7,4 +7,5 @@ pub const XSR900_GP: VehicleProfile = VehicleProfile {
     rev_limit_rpm: 11_500.0,
     max_speed_kmh: 235.0,
     redline_rpm: 11_250.0,
+    gauge_max_rpm: 12_000.0,
 };

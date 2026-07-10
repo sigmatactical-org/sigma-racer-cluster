@@ -49,18 +49,18 @@ pub fn attach(ui: &SigmaDashboard) {
             .unwrap_or_default();
 
         for msg in messages {
+            // Any validated frame means the link is alive (incl. Heartbeat).
+            session.last_msg_at = Some(std::time::Instant::now());
             if let Some(data) = msg.vss_data() {
                 session.state.apply_vss_map(data);
-                session.last_msg_at = Some(std::time::Instant::now());
             }
         }
 
         let live = session
             .last_msg_at
             .is_some_and(|t| t.elapsed() < TELEMETRY_STALE);
-        ui.set_telemetry_live(live);
-        if live {
-            apply_state(&ui, &session.state);
-        }
+        session.state.signals_live = live;
+        // Always push state so the dial stays visible under a stale banner.
+        apply_state(&ui, &session.state);
     });
 }

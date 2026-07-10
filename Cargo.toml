@@ -15,11 +15,18 @@ build = "build.rs"
 name = "sigma-racer-cluster"
 path = "src/main.rs"
 
+[features]
+default = []
+# Bench/test source: read live CAN frames off a SocketCAN interface (vcan0/can1).
+# Off by default so production/embedded builds pull in no socketcan dependency.
+can-socket = ["dep:socketcan"]
+
 [dependencies]
 sigma-instrumentation = { path = "../sigma-instrumentation/sigma-instrumentation" }
-sigma-racer-telemetry = { git = "ssh://git@github.com/sigmatactical-org/sigma-racer-telemetry.git", rev = "b09c0cc" }
+sigma-racer-telemetry = { path = "../sigma-racer-telemetry" }
 slint = { version = "=1.13.1", default-features = false, features = ["renderer-femtovg", "backend-winit", "compat-1-2"] }
 chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+socketcan = { version = "3.5", optional = true }
 
 [lints.rust]
 unsafe_code = "forbid"

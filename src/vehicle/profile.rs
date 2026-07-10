@@ -1,14 +1,20 @@
 //! Yamaha XSR900 GP vehicle profile — Sigma Racer product constants.
 
+use sigma_instrumentation::GaugeScale;
+
 /// Tuned triple calibration for the Sigma Racer demo / product line.
-///
-/// These are published product-spec constants. Only `idle_rpm` drives the boot
-/// placeholder today; `rev_limit_rpm`, `max_speed_kmh`, and `redline_rpm` are
-/// part of the vehicle profile surface and are retained for gauge/limit wiring.
 #[allow(dead_code)]
 pub struct VehicleProfile {
     pub idle_rpm: f32,
     pub rev_limit_rpm: f32,
     pub max_speed_kmh: f32,
     pub redline_rpm: f32,
+    /// Full-scale RPM on the tach sweep (may exceed the rev limit for headroom).
+    pub gauge_max_rpm: f32,
+}
+
+impl VehicleProfile {
+    pub fn gauge_scale(&self) -> GaugeScale {
+        GaugeScale::new(self.gauge_max_rpm, self.redline_rpm)
+    }
 }
