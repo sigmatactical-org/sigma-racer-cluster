@@ -7,21 +7,28 @@ mod telemetry;
 mod vehicle;
 
 use sigma_instrumentation::{
-    configure_window, init_gauge_art, start_signal_blink, theme, DisplayConfig, SigmaDashboard,
+    configure_window, ensure_panel_geometry, force_panel_scale_factor, init_gauge_art,
+    start_signal_blink, theme, DisplayConfig, SigmaDashboard,
 };
 use slint::ComponentHandle;
+use std::time::Duration;
 
 use crate::vehicle::XSR900_GP;
 
 fn main() -> Result<(), slint::PlatformError> {
+    // Must run before the window is created — winit reads SLINT_SCALE_FACTOR
+    // during adapter setup. ensure_panel_geometry then letterboxes 800×480.
+    force_panel_scale_factor();
+
     let ui = SigmaDashboard::new()?;
     let gauge = XSR900_GP.gauge_scale();
+    let kiosk = cfg!(sigma_racer_wingman_embedded)
+        || std::env::var("SLINT_FULLSCREEN")
+            .map(|v| v == "1" || v.eq_ignore_ascii_case("true"))
+            .unwrap_or(false);
 
     theme::init_from_env(&ui);
-    configure_window(
-        &ui,
-        DisplayConfig::embedded(cfg!(sigma_racer_wingman_embedded)),
-    );
+    configure_window(&ui, DisplayConfig::embedded(kiosk));
     init_gauge_art(&ui, &gauge);
 
     ui.set_current_window(0);
@@ -29,6 +36,21 @@ fn main() -> Result<(), slint::PlatformError> {
     telemetry::attach(&ui);
     app::start_clock(&ui);
     let _signal_blink = start_signal_blink(&ui);
+
+    // Weston/winit may remap the surface after first map — letterbox again.
+    let weak = ui.as_weak();
+    slint::Timer::single_shot(Duration::from_millis(100), move || {
+        if let Some(ui) = weak.upgrade() {
+            ensure_panel_geometry(&ui, kiosk);
+        }
+    });
+    // One more pass after Weston settles (mode / scale).
+    let weak = ui.as_weak();
+    slint::Timer::single_shot(Duration::from_millis(500), move || {
+        if let Some(ui) = weak.upgrade() {
+            ensure_panel_geometry(&ui, kiosk);
+        }
+    });
 
     ui.run()
 }
