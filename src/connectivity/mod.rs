@@ -9,7 +9,7 @@ use sigma_instrumentation::connectivity::{
     Action, BackResult, Controller, Snapshot, WINDOW as CONN_WINDOW,
 };
 use sigma_instrumentation::updates::{self as updates_nav, WINDOW as UPDATES_WINDOW};
-use sigma_instrumentation::{windows, SigmaDashboard};
+use sigma_instrumentation::{camera, windows, SigmaDashboard};
 use slint::ComponentHandle;
 use std::cell::{Cell, RefCell};
 use std::rc::Rc;
@@ -305,6 +305,8 @@ fn wire_nav(
                 c.paint(&ui);
             } else if win == UPDATES_WINDOW {
                 updates_nav::activate_focused(&ui);
+            } else if win == camera::WINDOW {
+                camera::toggle_feed(&ui);
             }
         });
     }
