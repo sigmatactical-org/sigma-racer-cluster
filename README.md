@@ -1,5 +1,7 @@
 # Sigma Racer Cluster
 
+[![CI](https://github.com/sigmatactical-org/sigma-racer-cluster/actions/workflows/ci.yml/badge.svg)](https://github.com/sigmatactical-org/sigma-racer-cluster/actions/workflows/ci.yml)
+
 Production instrument cluster application for the **Sigma Racer Wingman** motorcycle
 display — ships as the `sigma-racer-cluster` binary on i.MX 8M Plus / i.MX 95 class hardware.
 
