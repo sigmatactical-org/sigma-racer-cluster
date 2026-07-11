@@ -82,6 +82,12 @@ Full distribution docs: [`sigma-racer-wingman`](../sigma-racer-wingman/README.md
 - Slint 1.13.1 (pinned for Yocto Rust 1.86)
 - [`sigma-instrumentation`](../sigma-instrumentation/) workspace (library + telemetry)
 
+## Brand & artwork
+
+© Sigma Tactical Group. **All rights reserved.**
+
+The Sigma Tactical Group name, logos, marks, artwork, and visual identity are **proprietary**. They are not covered by this repository's source-code license. See [BRANDING.md](BRANDING.md).
+
 ## License
 
 MIT OR Apache-2.0 — see `LICENSE-MIT` and `LICENSE-APACHE`.
