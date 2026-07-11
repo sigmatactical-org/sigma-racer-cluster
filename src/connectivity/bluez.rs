@@ -17,6 +17,8 @@ type Managed = std::collections::HashMap<
     std::collections::HashMap<String, std::collections::HashMap<String, OwnedValue>>,
 >;
 
+type ConnectedDevice = Option<(String, i32)>;
+
 fn managed_objects(conn: &Connection) -> Result<Managed> {
     conn.call_method(Some(BLUEZ), "/", Some(OM), "GetManagedObjects", &())?
         .body()
@@ -97,7 +99,7 @@ impl BlueZ {
         Ok(())
     }
 
-    pub fn devices(&self) -> Result<(Vec<DeviceRow>, Option<(String, i32)>)> {
+    pub fn devices(&self) -> Result<(Vec<DeviceRow>, ConnectedDevice)> {
         let objects = managed_objects(&self.conn)?;
         let mut rows = Vec::new();
         let mut connected: Option<(String, i32)> = None;
