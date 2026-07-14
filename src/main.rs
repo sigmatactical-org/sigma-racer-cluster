@@ -2,6 +2,8 @@
 //!
 //! Live vehicle data replaces the idle loop via CAN-FD from the M7 safety core.
 
+#![forbid(unsafe_code)]
+
 mod app;
 mod connectivity;
 mod log;

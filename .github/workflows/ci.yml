@@ -89,3 +89,12 @@ jobs:
 
       - name: Build with SocketCAN
         run: cargo build --release --features can-socket
+
+  fmt:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: dtolnay/rust-toolchain@1.97.0
+        with:
+          components: rustfmt
+      - run: cargo fmt --all -- --check

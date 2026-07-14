@@ -30,4 +30,3 @@ socketcan = { version = "3.6.2", optional = true }
 zbus = { version = "5.17.0", features = ["blocking-api"] }
 
 [lints.rust]
-unsafe_code = "forbid"
