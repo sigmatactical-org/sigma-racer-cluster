@@ -7,7 +7,7 @@ use std::cell::RefCell;
 use std::rc::Rc;
 
 use super::binding::apply_state;
-use super::session::{Session, RECONNECT_TICKS, TELEMETRY_STALE, TICK};
+use super::session::{RECONNECT_TICKS, Session, TELEMETRY_STALE, TICK};
 use crate::connectivity;
 
 /// Subscribe to sigma-racer-vehicle and drive Slint properties from VSS snapshots.

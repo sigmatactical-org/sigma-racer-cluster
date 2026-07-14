@@ -1,6 +1,6 @@
 //! Map producer [`VehicleState`] → UI [`ClusterTelemetry`].
 
-use sigma_instrumentation::{apply_telemetry, ClusterTelemetry, GaugeScale, SigmaDashboard};
+use sigma_instrumentation::{ClusterTelemetry, GaugeScale, SigmaDashboard, apply_telemetry};
 use sigma_racer_telemetry::VehicleState;
 
 use crate::vehicle::XSR900_GP;

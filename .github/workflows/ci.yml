@@ -33,9 +33,12 @@ jobs:
           repository: sigmatactical-org/sigma-racer-sidearm
           path: embedded/sigma-racer-sidearm
 
-      - uses: dtolnay/rust-toolchain@1.90.0
+      - uses: dtolnay/rust-toolchain@1.97.0
         with:
           components: clippy
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y libfontconfig1-dev
 
       - uses: Swatinem/rust-cache@v2
         with:
@@ -75,7 +78,10 @@ jobs:
           repository: sigmatactical-org/sigma-racer-sidearm
           path: embedded/sigma-racer-sidearm
 
-      - uses: dtolnay/rust-toolchain@1.90.0
+      - uses: dtolnay/rust-toolchain@1.97.0
+
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y libfontconfig1-dev
 
       - uses: Swatinem/rust-cache@v2
         with:

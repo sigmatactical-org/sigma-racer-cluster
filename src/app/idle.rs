@@ -1,6 +1,6 @@
 //! Fallback values until the first Snapshot arrives from sigma-racer-vehicle.
 
-use sigma_instrumentation::{apply_telemetry, ClusterTelemetry, SigmaDashboard};
+use sigma_instrumentation::{ClusterTelemetry, SigmaDashboard, apply_telemetry};
 
 use crate::vehicle::XSR900_GP;
 

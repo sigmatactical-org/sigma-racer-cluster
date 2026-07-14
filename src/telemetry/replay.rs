@@ -108,7 +108,10 @@ mod tests {
             max_rpm = max_rpm.max(state.rpm);
             max_gear = max_gear.max(state.gear);
         }
-        assert!(max_speed > 100.0, "speed should reach highway pace, got {max_speed}");
+        assert!(
+            max_speed > 100.0,
+            "speed should reach highway pace, got {max_speed}"
+        );
         assert!(max_rpm > 8_000.0, "rpm should rev out, got {max_rpm}");
         assert!(max_gear >= 5, "should shift up, got gear {max_gear}");
     }

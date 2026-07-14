@@ -1,9 +1,9 @@
 //! ConnMan D-Bus client (system bus) for Wi-Fi power and association.
 
 use sigma_instrumentation::connectivity::NetworkRow;
+use zbus::Result;
 use zbus::blocking::Connection;
 use zbus::zvariant::{ObjectPath, OwnedObjectPath, OwnedValue, Value};
-use zbus::Result;
 
 const CONNMAN: &str = "net.connman";
 const MANAGER: &str = "net.connman.Manager";
@@ -33,8 +33,14 @@ fn prop_strings(map: &std::collections::HashMap<String, OwnedValue>, key: &str) 
         .unwrap_or_default()
 }
 
-type TechList = Vec<(OwnedObjectPath, std::collections::HashMap<String, OwnedValue>)>;
-type ServiceList = Vec<(OwnedObjectPath, std::collections::HashMap<String, OwnedValue>)>;
+type TechList = Vec<(
+    OwnedObjectPath,
+    std::collections::HashMap<String, OwnedValue>,
+)>;
+type ServiceList = Vec<(
+    OwnedObjectPath,
+    std::collections::HashMap<String, OwnedValue>,
+)>;
 
 pub struct ConnMan {
     conn: Connection,
@@ -63,7 +69,12 @@ impl ConnMan {
 
     fn wifi_tech(
         &self,
-    ) -> Result<Option<(OwnedObjectPath, std::collections::HashMap<String, OwnedValue>)>> {
+    ) -> Result<
+        Option<(
+            OwnedObjectPath,
+            std::collections::HashMap<String, OwnedValue>,
+        )>,
+    > {
         Ok(self
             .technologies()?
             .into_iter()
@@ -162,16 +173,14 @@ impl ConnMan {
     }
 
     pub fn connect_service(&self, path: &str) -> Result<()> {
-        let path =
-            ObjectPath::try_from(path).map_err(|e| zbus::Error::Failure(e.to_string()))?;
+        let path = ObjectPath::try_from(path).map_err(|e| zbus::Error::Failure(e.to_string()))?;
         self.conn
             .call_method(Some(CONNMAN), &path, Some(SERVICE), "Connect", &())?;
         Ok(())
     }
 
     pub fn disconnect_service(&self, path: &str) -> Result<()> {
-        let path =
-            ObjectPath::try_from(path).map_err(|e| zbus::Error::Failure(e.to_string()))?;
+        let path = ObjectPath::try_from(path).map_err(|e| zbus::Error::Failure(e.to_string()))?;
         self.conn
             .call_method(Some(CONNMAN), &path, Some(SERVICE), "Disconnect", &())?;
         Ok(())

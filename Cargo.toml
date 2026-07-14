@@ -7,7 +7,7 @@ authors = ["Sigma Tactical Group contributors <https://github.com/sigmatactical-
 description = "Sigma Racer Wingman instrument cluster UI"
 repository = "https://github.com/sigmatactical-org/sigma-racer-cluster"
 homepage = "https://sigmatactical.org"
-rust-version = "1.86.0"
+rust-version = "1.97.0"
 publish = false
 build = "build.rs"
 

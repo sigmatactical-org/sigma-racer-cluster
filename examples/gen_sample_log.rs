@@ -21,11 +21,7 @@ fn main() {
     while t < DURATION_S {
         let state = ride_state(t);
         for (id, payload) in encode_sim_frames(&state) {
-            println!(
-                "({:.6}) {IFACE} {id:03X}#{}",
-                BASE_EPOCH + t,
-                hex(&payload)
-            );
+            println!("({:.6}) {IFACE} {id:03X}#{}", BASE_EPOCH + t, hex(&payload));
         }
         t += DT;
     }
@@ -86,7 +82,11 @@ fn ride_state(t: f64) -> VehicleState {
     s.gear = gear;
     s.throttle_pct = throttle;
     s.side_stand = !moving;
-    s.lean_angle = if moving { 22.0 * (t * 0.7).sin() as f32 } else { 0.0 };
+    s.lean_angle = if moving {
+        22.0 * (t * 0.7).sin() as f32
+    } else {
+        0.0
+    };
     s.gforce = if (2.0..9.0).contains(&t) {
         0.55
     } else if (11.0..14.0).contains(&t) {

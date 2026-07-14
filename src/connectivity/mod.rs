@@ -9,7 +9,7 @@ use sigma_instrumentation::connectivity::{
     Action, BackResult, Controller, Snapshot, WINDOW as CONN_WINDOW,
 };
 use sigma_instrumentation::updates::{self as updates_nav, WINDOW as UPDATES_WINDOW};
-use sigma_instrumentation::{camera, windows, SigmaDashboard};
+use sigma_instrumentation::{SigmaDashboard, camera, windows};
 use slint::ComponentHandle;
 use std::cell::{Cell, RefCell};
 use std::rc::Rc;
@@ -215,16 +215,20 @@ pub fn start(ui: &SigmaDashboard, session: &Rc<RefCell<Session>>) {
     let ctrl_tick = ctrl;
     let backends_tick = backends;
     let timer = slint::Timer::default();
-    timer.start(slint::TimerMode::Repeated, Duration::from_secs(2), move || {
-        let Some(ui) = ui_weak.upgrade() else {
-            return;
-        };
-        let mut c = ctrl_tick.borrow_mut();
-        backends_tick.refresh(&mut c.snap);
-        if ui.get_current_window() == CONN_WINDOW {
-            c.paint(&ui);
-        }
-    });
+    timer.start(
+        slint::TimerMode::Repeated,
+        Duration::from_secs(2),
+        move || {
+            let Some(ui) = ui_weak.upgrade() else {
+                return;
+            };
+            let mut c = ctrl_tick.borrow_mut();
+            backends_tick.refresh(&mut c.snap);
+            if ui.get_current_window() == CONN_WINDOW {
+                c.paint(&ui);
+            }
+        },
+    );
     std::mem::forget(timer);
 }
 

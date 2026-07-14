@@ -8,9 +8,8 @@ mod telemetry;
 mod vehicle;
 
 use sigma_instrumentation::{
-    configure_window, ensure_panel_geometry, force_panel_scale_factor, init_gauge_art,
-    start_signal_blink, start_updates_client, theme, DisplayConfig, SigmaDashboard,
-    UpdatesConfig,
+    DisplayConfig, SigmaDashboard, UpdatesConfig, configure_window, ensure_panel_geometry,
+    force_panel_scale_factor, init_gauge_art, start_signal_blink, start_updates_client, theme,
 };
 use slint::ComponentHandle;
 use std::time::Duration;

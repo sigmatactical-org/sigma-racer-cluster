@@ -1,9 +1,9 @@
 //! BlueZ D-Bus client (system bus) for headset / intercom control.
 
 use sigma_instrumentation::connectivity::DeviceRow;
+use zbus::Result;
 use zbus::blocking::Connection;
 use zbus::zvariant::{ObjectPath, OwnedObjectPath, OwnedValue, Value};
-use zbus::Result;
 
 const BLUEZ: &str = "org.bluez";
 const OM: &str = "org.freedesktop.DBus.ObjectManager";
@@ -45,7 +45,12 @@ fn prop_u8(map: &std::collections::HashMap<String, OwnedValue>, key: &str) -> Op
     map.get(key).and_then(|v| u8::try_from(v.clone()).ok())
 }
 
-fn find_adapter(objects: &Managed) -> Option<(OwnedObjectPath, &std::collections::HashMap<String, OwnedValue>)> {
+fn find_adapter(
+    objects: &Managed,
+) -> Option<(
+    OwnedObjectPath,
+    &std::collections::HashMap<String, OwnedValue>,
+)> {
     for (path, ifaces) in objects {
         if let Some(props) = ifaces.get(ADAPTER) {
             return Some((path.clone(), props));
@@ -161,18 +166,16 @@ impl BlueZ {
     }
 
     pub fn connect_device(&self, path: &str) -> Result<()> {
-        let path =
-            ObjectPath::try_from(path).map_err(|e| zbus::Error::Failure(e.to_string()))?;
+        let path = ObjectPath::try_from(path).map_err(|e| zbus::Error::Failure(e.to_string()))?;
         let objects = managed_objects(&self.conn)?;
         let owned = OwnedObjectPath::from(path.clone());
-        if let Some(ifaces) = objects.get(&owned) {
-            if let Some(dev) = ifaces.get(DEVICE) {
-                if !prop_bool(dev, "Paired") {
-                    let _ = self
-                        .conn
-                        .call_method(Some(BLUEZ), &path, Some(DEVICE), "Pair", &());
-                }
-            }
+        if let Some(ifaces) = objects.get(&owned)
+            && let Some(dev) = ifaces.get(DEVICE)
+            && !prop_bool(dev, "Paired")
+        {
+            let _ = self
+                .conn
+                .call_method(Some(BLUEZ), &path, Some(DEVICE), "Pair", &());
         }
         self.conn
             .call_method(Some(BLUEZ), &path, Some(DEVICE), "Connect", &())?;
@@ -180,8 +183,7 @@ impl BlueZ {
     }
 
     pub fn disconnect_device(&self, path: &str) -> Result<()> {
-        let path = ObjectPath::try_from(path)
-            .map_err(|e| zbus::Error::Failure(e.to_string()))?;
+        let path = ObjectPath::try_from(path).map_err(|e| zbus::Error::Failure(e.to_string()))?;
         self.conn
             .call_method(Some(BLUEZ), &path, Some(DEVICE), "Disconnect", &())?;
         Ok(())
