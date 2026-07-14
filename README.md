@@ -1,7 +1,7 @@
 # Sigma Racer Cluster
 
 [![CI](https://github.com/sigmatactical-org/sigma-racer-cluster/actions/workflows/ci.yml/badge.svg)](https://github.com/sigmatactical-org/sigma-racer-cluster/actions/workflows/ci.yml)
-[![License](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](#license)
+[![License](https://img.shields.io/badge/license-GPL--3.0--only-blue.svg)](#license)
 [![MSRV](https://img.shields.io/badge/MSRV-1.97.0-blue.svg)](https://www.rust-lang.org)
 
 Production instrument cluster application for the **Sigma Racer Wingman** motorcycle
@@ -82,8 +82,8 @@ Full distribution docs: [`sigma-racer-wingman`](../sigma-racer-wingman/README.md
 
 ## Requirements
 
-- Rust 1.86+ (Yocto meta-rust scarthgap)
-- Slint 1.13.1 (pinned for Yocto Rust 1.86)
+- Rust 1.97+ (Yocto meta-rust scarthgap)
+- Slint 1.17.1 (pinned)
 - [`sigma-instrumentation`](../sigma-instrumentation/) workspace (library + telemetry)
 
 ## Brand & artwork
@@ -94,4 +94,39 @@ The Sigma Tactical Group name, logos, marks, artwork, and visual identity are **
 
 ## License
 
-MIT OR Apache-2.0 — see `LICENSE-MIT` and `LICENSE-APACHE`.
+**GPL-3.0-only** — see [LICENSE](LICENSE).
+
+This repository is the exception to the Sigma Racer workspace's usual
+MIT OR Apache-2.0 licensing: it links [Slint](https://slint.dev) under
+Slint's GPL-3.0-only option, which permits deployment on embedded
+hardware without a commercial Slint license.
+
+### Licensing boundary
+
+- **Logic lives downstream.** CAN decode, protocols, and vehicle state
+  belong in the permissive (MIT OR Apache-2.0) crates —
+  `sigma-racer-telemetry`, `sigma-diagnostics`, and the
+  `sigma-instrumentation` library. This crate is the thin GPL shell
+  that assembles them into the shipped cluster binary. If a change here
+  starts growing reusable logic, move it down first.
+- **Contributions are dual-licensed.** By contributing to this
+  repository you agree your contribution is licensed MIT OR Apache-2.0
+  (as elsewhere in the Sigma Racer workspace), in addition to being
+  distributed here under GPL-3.0-only. This keeps the maintainers free
+  to move code into the permissive crates.
+- **No proprietary artwork.** Sigma Tactical Group brand assets are not
+  included in this repository (see [BRANDING.md](BRANDING.md)); the UI
+  is code-drawn. Do not add proprietary artwork to this GPL-licensed
+  tree.
+
+### Shipping obligations
+
+Conveying a vehicle with this software installed is distribution under
+GPLv3:
+
+- **Corresponding source** for the combined cluster binary must
+  accompany the device or be available by written offer.
+- **Installation Information (GPLv3 §6):** on a consumer product,
+  owners must be able to install modified versions. The signed-firmware
+  / RAUC OTA design must include an owner-unlock path for the cluster
+  image.

@@ -2,7 +2,7 @@
 name = "sigma-racer-cluster"
 version = "0.1.0"
 edition = "2024"
-license = "MIT OR Apache-2.0"
+license = "GPL-3.0-only"
 authors = ["Sigma Tactical Group contributors <https://github.com/sigmatactical-org>"]
 description = "Sigma Racer Wingman instrument cluster UI"
 repository = "https://github.com/sigmatactical-org/sigma-racer-cluster"
