@@ -42,11 +42,13 @@ type ServiceList = Vec<(
     std::collections::HashMap<String, OwnedValue>,
 )>;
 
+/// Blocking connman client for Wi-Fi technology and service control.
 pub struct ConnMan {
     conn: Connection,
 }
 
 impl ConnMan {
+    /// Connect to the system bus.
     pub fn connect() -> Result<Self> {
         Ok(Self {
             conn: Connection::system()?,
@@ -81,6 +83,7 @@ impl ConnMan {
             .find(|(_, props)| prop_string(props, "Type") == "wifi"))
     }
 
+    /// Whether the Wi-Fi technology is powered.
     pub fn wifi_powered(&self) -> Result<bool> {
         Ok(self
             .wifi_tech()?
@@ -88,6 +91,7 @@ impl ConnMan {
             .unwrap_or(false))
     }
 
+    /// Power Wi-Fi on/off.
     pub fn set_wifi_powered(&self, on: bool) -> Result<()> {
         let Some((path, _)) = self.wifi_tech()? else {
             return Err(zbus::Error::Failure("no Wi-Fi technology".into()));
@@ -102,6 +106,7 @@ impl ConnMan {
         Ok(())
     }
 
+    /// Trigger a Wi-Fi scan (ignores in-progress errors).
     pub fn scan_wifi(&self) -> Result<()> {
         let Some((path, _)) = self.wifi_tech()? else {
             return Err(zbus::Error::Failure("no Wi-Fi technology".into()));
@@ -111,6 +116,7 @@ impl ConnMan {
         Ok(())
     }
 
+    /// List Wi-Fi services plus the SSID of the online one, if any.
     pub fn networks(&self) -> Result<(Vec<NetworkRow>, Option<String>)> {
         let mut rows = Vec::new();
         let mut online: Option<String> = None;
@@ -172,6 +178,7 @@ impl ConnMan {
         Ok((rows, online))
     }
 
+    /// Connect the service at the given object `path`.
     pub fn connect_service(&self, path: &str) -> Result<()> {
         let path = ObjectPath::try_from(path).map_err(|e| zbus::Error::Failure(e.to_string()))?;
         self.conn
@@ -179,6 +186,7 @@ impl ConnMan {
         Ok(())
     }
 
+    /// Disconnect the service at the given object `path`.
     pub fn disconnect_service(&self, path: &str) -> Result<()> {
         let path = ObjectPath::try_from(path).map_err(|e| zbus::Error::Failure(e.to_string()))?;
         self.conn

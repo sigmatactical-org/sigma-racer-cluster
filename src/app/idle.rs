@@ -4,6 +4,7 @@ use sigma_instrumentation::{ClusterTelemetry, SigmaDashboard, apply_telemetry};
 
 use crate::vehicle::XSR900_GP;
 
+/// Push the idle (engine-off) telemetry snapshot into the UI.
 pub fn push(ui: &SigmaDashboard) {
     let gauge = XSR900_GP.gauge_scale();
     let mut msg = ClusterTelemetry::idle();

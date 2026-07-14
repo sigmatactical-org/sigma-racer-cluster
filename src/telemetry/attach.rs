@@ -1,5 +1,6 @@
 //! Subscribe to sigma-racer-vehicle and drive Slint properties from VSS snapshots.
 
+use crate::log::log;
 use sigma_instrumentation::SigmaDashboard;
 use sigma_racer_telemetry::TelemetryClient;
 use slint::ComponentHandle;
@@ -14,9 +15,9 @@ use crate::connectivity;
 pub fn attach(ui: &SigmaDashboard) {
     let initial = TelemetryClient::connect();
     if initial.is_some() {
-        eprintln!("sigma-racer-cluster: subscribed to vehicle telemetry");
+        log!("subscribed to vehicle telemetry");
     } else {
-        eprintln!("sigma-racer-cluster: vehicle telemetry unavailable — retrying in background");
+        log!("vehicle telemetry unavailable — retrying in background");
     }
 
     let session = Rc::new(RefCell::new(Session::new(initial)));
@@ -35,7 +36,7 @@ pub fn attach(ui: &SigmaDashboard) {
                 session.ticks_since_attempt = 0;
                 session.client = TelemetryClient::connect();
                 if session.client.is_some() {
-                    eprintln!("sigma-racer-cluster: subscribed to vehicle telemetry");
+                    log!("subscribed to vehicle telemetry");
                 }
             }
             ui.set_telemetry_live(false);

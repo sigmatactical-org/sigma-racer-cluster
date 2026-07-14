@@ -4,6 +4,7 @@
 
 mod app;
 mod connectivity;
+mod log;
 mod telemetry;
 mod vehicle;
 

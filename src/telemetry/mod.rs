@@ -15,6 +15,7 @@ mod can_source;
 mod replay;
 pub(crate) mod session;
 
+use crate::log::log;
 use sigma_instrumentation::SigmaDashboard;
 
 /// Attach the telemetry source chosen by `CLUSTER_TELEMETRY_SOURCE` (default `ipc`).
@@ -25,7 +26,7 @@ pub fn attach(ui: &SigmaDashboard) {
         "replay" => replay::attach(ui),
         "can" | "socketcan" => attach_can(ui),
         other => {
-            eprintln!("sigma-racer-cluster: unknown CLUSTER_TELEMETRY_SOURCE '{other}', using ipc");
+            log!("unknown CLUSTER_TELEMETRY_SOURCE '{other}', using ipc");
             attach::attach(ui);
         }
     }
@@ -38,8 +39,8 @@ fn attach_can(ui: &SigmaDashboard) {
 
 #[cfg(not(feature = "can-socket"))]
 fn attach_can(ui: &SigmaDashboard) {
-    eprintln!(
-        "sigma-racer-cluster: CLUSTER_TELEMETRY_SOURCE=can needs a build with \
+    log!(
+        "CLUSTER_TELEMETRY_SOURCE=can needs a build with \
          --features can-socket; using ipc"
     );
     attach::attach(ui);

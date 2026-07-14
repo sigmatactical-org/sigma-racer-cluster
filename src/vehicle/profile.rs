@@ -14,6 +14,7 @@ pub struct VehicleProfile {
 }
 
 impl VehicleProfile {
+    /// The tach/speed gauge ranges for this vehicle.
     pub fn gauge_scale(&self) -> GaugeScale {
         GaugeScale::new(self.gauge_max_rpm, self.redline_rpm)
     }

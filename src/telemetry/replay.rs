@@ -5,6 +5,7 @@
 //! DBC decoder with their original inter-frame timing, looping forever. Lets you
 //! reproduce a captured ride deterministically with no CAN hardware.
 
+use crate::log::log;
 use sigma_instrumentation::SigmaDashboard;
 use sigma_racer_telemetry::can::{decode_frame, parse_candump};
 use sigma_racer_telemetry::state::VehicleState;
@@ -26,7 +27,7 @@ pub fn attach(ui: &SigmaDashboard) {
         Ok(path) => match std::fs::read_to_string(&path) {
             Ok(text) => (path, text),
             Err(err) => {
-                eprintln!("sigma-racer-cluster: replay {path}: {err} — using baked sample");
+                log!("replay {path}: {err} — using baked sample");
                 ("baked sample".to_owned(), SAMPLE_LOG.to_owned())
             }
         },
@@ -35,13 +36,13 @@ pub fn attach(ui: &SigmaDashboard) {
 
     let frames = parse_candump(&text);
     if frames.is_empty() {
-        eprintln!("sigma-racer-cluster: replay log '{source}' had no usable frames");
+        log!("replay log '{source}' had no usable frames");
         ui.set_telemetry_live(false);
         return;
     }
     let span = frames.last().map(|f| f.at).unwrap_or(0.0);
-    eprintln!(
-        "sigma-racer-cluster: replaying {} frames ({:.1}s) from {source}",
+    log!(
+        "replaying {} frames ({:.1}s) from {source}",
         frames.len(),
         span
     );

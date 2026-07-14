@@ -2,6 +2,7 @@
 
 use super::profile::VehicleProfile;
 
+/// Yamaha XSR900 GP track build — the launch vehicle.
 pub const XSR900_GP: VehicleProfile = VehicleProfile {
     idle_rpm: 1_200.0,
     rev_limit_rpm: 11_500.0,

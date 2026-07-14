@@ -9,6 +9,7 @@ pub const RECONNECT_TICKS: u32 = 30;
 /// Hide live values when no validated telemetry arrived recently.
 pub const TELEMETRY_STALE: std::time::Duration = std::time::Duration::from_secs(2);
 
+/// Mutable per-run UI state shared between telemetry and navigation.
 pub struct Session {
     pub client: Option<TelemetryClient>,
     pub state: VehicleState,
@@ -18,6 +19,7 @@ pub struct Session {
 }
 
 impl Session {
+    /// Start a session on window 0 with an optional IPC client.
     pub fn new(client: Option<TelemetryClient>) -> Self {
         Self {
             client,

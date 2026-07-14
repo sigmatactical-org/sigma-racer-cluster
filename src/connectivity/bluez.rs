@@ -59,17 +59,20 @@ fn find_adapter(
     None
 }
 
+/// Blocking BlueZ client for the adapter at [`ADAPTER_PATH`].
 pub struct BlueZ {
     conn: Connection,
 }
 
 impl BlueZ {
+    /// Connect to the system bus.
     pub fn connect() -> Result<Self> {
         Ok(Self {
             conn: Connection::system()?,
         })
     }
 
+    /// Whether the adapter is powered.
     pub fn powered(&self) -> Result<bool> {
         let objects = managed_objects(&self.conn)?;
         Ok(find_adapter(&objects)
@@ -77,6 +80,7 @@ impl BlueZ {
             .unwrap_or(false))
     }
 
+    /// Power the adapter on/off.
     pub fn set_powered(&self, on: bool) -> Result<()> {
         let objects = managed_objects(&self.conn)?;
         let Some((path, _)) = find_adapter(&objects) else {
@@ -92,6 +96,7 @@ impl BlueZ {
         Ok(())
     }
 
+    /// Begin device discovery (ignores "already discovering").
     pub fn start_discovery(&self) -> Result<()> {
         let objects = managed_objects(&self.conn)?;
         let Some((path, _)) = find_adapter(&objects) else {
@@ -104,6 +109,7 @@ impl BlueZ {
         Ok(())
     }
 
+    /// List known devices plus the currently connected one (name, battery).
     pub fn devices(&self) -> Result<(Vec<DeviceRow>, ConnectedDevice)> {
         let objects = managed_objects(&self.conn)?;
         let mut rows = Vec::new();
@@ -165,6 +171,7 @@ impl BlueZ {
         Ok((rows, connected))
     }
 
+    /// Connect the device at the given object `path`.
     pub fn connect_device(&self, path: &str) -> Result<()> {
         let path = ObjectPath::try_from(path).map_err(|e| zbus::Error::Failure(e.to_string()))?;
         let objects = managed_objects(&self.conn)?;
@@ -182,6 +189,7 @@ impl BlueZ {
         Ok(())
     }
 
+    /// Disconnect the device at the given object `path`.
     pub fn disconnect_device(&self, path: &str) -> Result<()> {
         let path = ObjectPath::try_from(path).map_err(|e| zbus::Error::Failure(e.to_string()))?;
         self.conn

@@ -9,6 +9,7 @@
 //! `CLUSTER_TELEMETRY_SOURCE=can` (interface via `CLUSTER_CAN_IFACE`, default
 //! `vcan0`).
 
+use crate::log::log;
 use sigma_instrumentation::SigmaDashboard;
 use sigma_racer_telemetry::can::decode_frame;
 use slint::ComponentHandle;
@@ -36,15 +37,15 @@ pub fn attach(ui: &SigmaDashboard) {
     }) {
         Ok(socket) => socket,
         Err(err) => {
-            eprintln!(
-                "sigma-racer-cluster: open CAN interface '{iface}': {err} — is it up? \
+            log!(
+                "open CAN interface '{iface}': {err} — is it up? \
                  (see scripts/vcan-up.sh)"
             );
             ui.set_telemetry_live(false);
             return;
         }
     };
-    eprintln!("sigma-racer-cluster: receiving CAN on {iface}");
+    log!("receiving CAN on {iface}");
 
     let session = Rc::new(RefCell::new(Session::new(None)));
     connectivity::start(ui, &session);
@@ -71,7 +72,7 @@ pub fn attach(ui: &SigmaDashboard) {
                 Ok(_) => continue, // remote/error frames — ignore
                 Err(err) if err.kind() == ErrorKind::WouldBlock => break,
                 Err(err) => {
-                    eprintln!("sigma-racer-cluster: CAN read: {err}");
+                    log!("CAN read: {err}");
                     break;
                 }
             }
@@ -92,7 +93,7 @@ fn handle_frame(frame: &CanDataFrame, session: &mut Session) -> bool {
     if decode_frame(id, &data[..len], &mut session.state) {
         true
     } else {
-        eprintln!("sigma-racer-cluster: ignore undecodable CAN frame 0x{id:03X}");
+        log!("ignore undecodable CAN frame 0x{id:03X}");
         false
     }
 }

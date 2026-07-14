@@ -39,6 +39,7 @@ pub fn apply_state(ui: &SigmaDashboard, state: &VehicleState) {
     apply_state_with_gauge(ui, state, &gauge);
 }
 
+/// Apply `state` to the UI together with the vehicle profile's gauge scale.
 pub fn apply_state_with_gauge(ui: &SigmaDashboard, state: &VehicleState, gauge: &GaugeScale) {
     apply_telemetry(ui, &to_cluster(state), gauge);
 }
