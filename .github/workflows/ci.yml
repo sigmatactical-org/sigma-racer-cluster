@@ -43,6 +43,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: embedded/sigma-racer-cluster
+          add-rust-environment-hash-key: false
 
       - name: Host tests
         run: cargo test
@@ -86,6 +87,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: embedded/sigma-racer-cluster
+          add-rust-environment-hash-key: false
 
       - name: Build with SocketCAN
         run: cargo build --release --features can-socket
