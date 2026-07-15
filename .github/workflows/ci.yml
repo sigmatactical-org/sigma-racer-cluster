@@ -44,6 +44,7 @@ jobs:
         with:
           workspaces: embedded/sigma-racer-cluster
           add-rust-environment-hash-key: false
+          key: ${{ hashFiles('embedded/sigma-racer-cluster/Cargo.lock', 'embedded/sigma-racer-cluster/Cargo.toml', 'embedded/sigma-racer-cluster/rust-toolchain.toml', 'embedded/sigma-racer-cluster/.cargo/config.toml') }}
 
       - name: Host tests
         run: cargo test
@@ -88,6 +89,7 @@ jobs:
         with:
           workspaces: embedded/sigma-racer-cluster
           add-rust-environment-hash-key: false
+          key: ${{ hashFiles('embedded/sigma-racer-cluster/Cargo.lock', 'embedded/sigma-racer-cluster/Cargo.toml', 'embedded/sigma-racer-cluster/rust-toolchain.toml', 'embedded/sigma-racer-cluster/.cargo/config.toml') }}
 
       - name: Build with SocketCAN
         run: cargo build --release --features can-socket
