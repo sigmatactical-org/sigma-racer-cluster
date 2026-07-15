@@ -32,7 +32,11 @@ impl NoIoAgent {
 
     fn display_passkey(&self, _device: OwnedObjectPath, _passkey: u32, _entered: u16) {}
 
-    fn request_confirmation(&self, _device: OwnedObjectPath, _passkey: u32) -> zbus::fdo::Result<()> {
+    fn request_confirmation(
+        &self,
+        _device: OwnedObjectPath,
+        _passkey: u32,
+    ) -> zbus::fdo::Result<()> {
         Ok(())
     }
 
