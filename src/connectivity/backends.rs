@@ -10,6 +10,9 @@ use sigma_instrumentation::connectivity::{Action, Snapshot};
 pub(super) struct Backends {
     bluez: Option<BlueZ>,
     connman: Option<ConnMan>,
+    /// Pairing agent registered and adapter powered — retried on refresh
+    /// until bluetoothd and its adapter are actually up (slow boot).
+    bt_ready: std::cell::Cell<bool>,
 }
 
 impl Backends {
@@ -30,12 +33,37 @@ impl Backends {
                 None
             }
         };
-        Self { bluez, connman }
+        let this = Self {
+            bluez,
+            connman,
+            bt_ready: std::cell::Cell::new(false),
+        };
+        this.ensure_bt_ready();
+        this
+    }
+
+    /// One-shot bring-up: register the pairing agent and power the adapter.
+    /// Safe to call repeatedly; does nothing once it has succeeded.
+    fn ensure_bt_ready(&self) {
+        if self.bt_ready.get() {
+            return;
+        }
+        let Some(bt) = &self.bluez else { return };
+        if let Err(err) = bt.register_agent() {
+            log!("BlueZ agent registration pending: {err}");
+            return;
+        }
+        if let Err(err) = bt.set_powered(true) {
+            log!("BlueZ adapter power-on pending: {err}");
+            return;
+        }
+        self.bt_ready.set(true);
     }
 
     /// Re-read power state, device and network lists into `snap`, folding
     /// backend errors into the window's status line.
     pub(super) fn refresh(&self, snap: &mut Snapshot) {
+        self.ensure_bt_ready();
         snap.available = self.bluez.is_some() || self.connman.is_some();
         let mut notes = Vec::new();
 

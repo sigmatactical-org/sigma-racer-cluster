@@ -1,5 +1,6 @@
 //! Live Connectivity window: BlueZ + connman over D-Bus, driven by face buttons.
 
+mod agent;
 mod backends;
 mod bluez;
 mod connman;

@@ -72,6 +72,11 @@ impl BlueZ {
         })
     }
 
+    /// Register the pairing agent on this connection (see [`super::agent`]).
+    pub fn register_agent(&self) -> Result<()> {
+        super::agent::register(&self.conn)
+    }
+
     /// Whether the adapter is powered.
     pub fn powered(&self) -> Result<bool> {
         let objects = managed_objects(&self.conn)?;
@@ -171,7 +176,8 @@ impl BlueZ {
         Ok((rows, connected))
     }
 
-    /// Connect the device at the given object `path`.
+    /// Connect the device at the given object `path`, pairing (and trusting,
+    /// so it can reconnect on its own) first when needed.
     pub fn connect_device(&self, path: &str) -> Result<()> {
         let path = ObjectPath::try_from(path).map_err(|e| zbus::Error::Failure(e.to_string()))?;
         let objects = managed_objects(&self.conn)?;
@@ -184,6 +190,15 @@ impl BlueZ {
                 .conn
                 .call_method(Some(BLUEZ), &path, Some(DEVICE), "Pair", &());
         }
+        // Trusted lets the headset re-establish profiles without a fresh
+        // authorization round-trip on every ignition cycle.
+        let _ = self.conn.call_method(
+            Some(BLUEZ),
+            &path,
+            Some(PROPS),
+            "Set",
+            &(DEVICE, "Trusted", Value::from(true)),
+        );
         self.conn
             .call_method(Some(BLUEZ), &path, Some(DEVICE), "Connect", &())?;
         Ok(())
