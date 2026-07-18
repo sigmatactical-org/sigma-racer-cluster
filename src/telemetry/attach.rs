@@ -1,9 +1,9 @@
 //! Subscribe to sigma-racer-vehicle and drive Slint properties from VSS snapshots.
 
 use crate::log::log;
-use sigma_instrumentation::SigmaDashboard;
+use sigma_instrumentation::{AlertItem, SigmaDashboard};
 use sigma_racer_telemetry::TelemetryClient;
-use slint::ComponentHandle;
+use slint::{ComponentHandle, ModelRc, SharedString, VecModel};
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -52,7 +52,10 @@ pub fn attach(ui: &SigmaDashboard) {
         for msg in messages {
             // Any validated frame means the link is alive (incl. Heartbeat).
             session.last_msg_at = Some(std::time::Instant::now());
-            if let Some(data) = msg.vss_data() {
+            if msg.msg == "Event" {
+                // Anomaly alerts from the vehicle daemon's detector engine.
+                session.ingest_alert(&msg);
+            } else if let Some(data) = msg.vss_data() {
                 session.state.apply_vss_map(data);
             }
         }
@@ -63,5 +66,38 @@ pub fn attach(ui: &SigmaDashboard) {
         session.state.signals_live = live;
         // Always push state so the dial stays visible under a stale banner.
         apply_state(&ui, &session.state);
+        apply_alerts(&ui, &session);
     });
+}
+
+/// Push the alert telltale + Alerts window rows from the session's tracker.
+fn apply_alerts(ui: &SigmaDashboard, session: &Session) {
+    let worst = session.alerts.worst_active();
+    ui.set_alert_severity(SharedString::from(
+        worst.map(|(_, sev)| sev.label()).unwrap_or(""),
+    ));
+    ui.set_alert_headline(SharedString::from(
+        worst.map(|(id, _)| headline(id)).unwrap_or_default(),
+    ));
+    ui.set_alert_count(session.alerts.active().count() as i32);
+    ui.set_alerts_latched(session.alerts.active().any(|slot| slot.latched));
+
+    // Newest first; `active` greys out entries whose alert has since cleared.
+    let rows: Vec<AlertItem> = session
+        .alert_log
+        .iter()
+        .rev()
+        .map(|entry| AlertItem {
+            time: entry.time.clone().into(),
+            severity: entry.severity.label().into(),
+            message: entry.message.clone().into(),
+            active: session.alerts.active().any(|slot| slot.id == entry.id),
+        })
+        .collect();
+    ui.set_alerts(ModelRc::new(VecModel::from(rows)));
+}
+
+/// Rider-facing headline from an alert id: `coolant_overheat` → "COOLANT OVERHEAT".
+fn headline(id: &str) -> String {
+    id.replace('_', " ").to_uppercase()
 }

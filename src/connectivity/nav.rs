@@ -90,6 +90,8 @@ pub(super) fn wire_nav(
                 updates_nav::activate_focused(&ui);
             } else if win == camera::WINDOW {
                 camera::toggle_feed(&ui);
+            } else if win == windows::ALERTS {
+                session.borrow_mut().ack_latched_alerts();
             }
         });
     }
