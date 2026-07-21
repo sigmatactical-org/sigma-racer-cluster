@@ -57,13 +57,19 @@ pub fn attach(ui: &SigmaDashboard) {
                 session.ingest_alert(&msg);
             } else if let Some(data) = msg.vss_data() {
                 session.state.apply_vss_map(data);
+                // Per-signal freshness from the vehicle (replaces the old
+                // global Vehicle.Service.SignalsLive wire value).
+                session.state.apply_availability(msg.avail_data());
             }
         }
 
-        let live = session
+        // Link up is necessary but not sufficient: a 1 Hz heartbeat keeps the
+        // IPC link "alive" even when the CAN bus is dead. Show live only when
+        // the link is up AND the vehicle reports its core signals fresh.
+        let link_live = session
             .last_msg_at
             .is_some_and(|t| t.elapsed() < TELEMETRY_STALE);
-        session.state.signals_live = live;
+        session.state.signals_live = link_live && session.state.signals_live;
         // Always push state so the dial stays visible under a stale banner.
         apply_state(&ui, &session.state);
         apply_alerts(&ui, &session);
