@@ -7,7 +7,7 @@ authors = ["Sigma Tactical Group contributors <https://github.com/sigmatactical-
 description = "Sigma Racer Wingman instrument cluster UI"
 repository = "https://github.com/sigmatactical-org/sigma-racer-cluster"
 homepage = "https://sigmatactical.org"
-rust-version = "1.97.0"
+rust-version = "1.97.1"
 publish = false
 build = "build.rs"
 
@@ -27,6 +27,6 @@ sigma-racer-telemetry = { path = "../sigma-racer-telemetry" }
 slint = { version = "=1.17.1", default-features = false, features = ["renderer-femtovg", "backend-winit", "compat-1-2"] }
 chrono = { version = "0.4.45", default-features = false, features = ["clock", "std"] }
 socketcan = { version = "3.6.2", optional = true }
-zbus = { version = "5.17.0", features = ["blocking-api"] }
+zbus = { version = "5.18.0", features = ["blocking-api"] }
 
 [lints.rust]
